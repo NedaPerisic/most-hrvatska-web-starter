@@ -1,0 +1,200 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+const policyPillars = [
+  { slug: 'korupcija-i-transparentnost', title: 'Antikorupcija', icon: '⚖️', desc: 'Sustavna borba protiv korupcije i konflikta interesa.' },
+  { slug: 'lokalna-samouprava-jls', title: 'Transparentnost JLS', icon: '🏛️', desc: 'Otvoreni proračuni i odgovorna lokalna vlast.' },
+  { slug: 'pravosuđe', title: 'Neovisno pravosuđe', icon: '🔍', desc: 'Reforma sudstva i jednakost pred zakonom.' },
+  { slug: 'gospodarstvo-i-poduzetnistvo', title: 'Poduzetništvo', icon: '💼', desc: 'Manje birokracije, više slobode za MSP.' },
+];
+
+const deliveries = [
+  { num: '124', label: 'Saborska pitanja u 2024.', sub: 'Najviše po zastupniku' },
+  { num: '17', label: 'Inicijativa u 2025.', sub: 'Direktni zakonski prijedlozi' },
+  { num: '8', label: 'Otkrivenih afera', sub: 'Javne nabave i koncesije' },
+];
+
+const recentNews = [
+  {
+    slug: '2026/04/15/grmoja-hrvatska-samodostatnost-hrane',
+    title: 'Grmoja: Hrvatska mora vratiti samodostatnost hrane do 2030.',
+    date: '15. travnja 2026.',
+    excerpt: 'MOST predlaže paket od 12 mjera za jačanje malih OPG-ova i smanjenje uvoza osnovnih namirnica.',
+    image: '/news/news-1.jpg',
+  },
+  {
+    slug: '2026/03/17/most-zakon-o-igrama-na-srecu',
+    title: 'MOST: Hitna izmjena Zakona o igrama na sreću',
+    date: '17. ožujka 2026.',
+    excerpt: 'Zaštita maloljetnika i ovisnika o kockanju mora biti prioritet — predlažemo ograničenje oglašavanja i obveznu samozabranu.',
+    image: '/news/news-2.jpg',
+  },
+  {
+    slug: '2026/02/05/kujundzic-upozorio-na-ovrhe-nad-djetetom',
+    title: 'Kujundžić upozorio: ovrhe nad djecom moraju prestati',
+    date: '5. veljače 2026.',
+    excerpt: 'Tisuće djece u Hrvatskoj imaju aktivne ovrhe — sustav koji to dopušta moramo promijeniti.',
+    image: '/news/news-3.jpg',
+  },
+];
+
+const featuredMembers = [
+  { slug: 'nikola-grmoja', name: 'Nikola Grmoja', role: 'Predsjednik Kluba zastupnika' },
+  { slug: 'bozo-petrov', name: 'Božo Petrov', role: 'Predsjednik stranke' },
+  { slug: 'marin-miletic', name: 'Marin Miletić', role: 'Saborski zastupnik' },
+  { slug: 'zvonimir-troskot', name: 'Zvonimir Troskot', role: 'Saborski zastupnik' },
+];
+---
+
+<BaseLayout
+  title="MOST Hrvatska — transparentnost, odgovornost, poštene institucije"
+  description="MOST je hrvatska politička stranka koja se bori za transparentnost, antikorupciju i odgovornu lokalnu samoupravu. Saborska oporba s 11 zastupnika."
+  type="website"
+>
+  <!-- HERO -->
+  <section class="relative bg-gradient-to-br from-most-700 via-most-700 to-most-800 text-white overflow-hidden">
+    <div class="absolute inset-0 opacity-10" style="background-image: radial-gradient(circle at 20% 30%, white 1px, transparent 1px); background-size: 40px 40px;"></div>
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28">
+      <div class="max-w-3xl">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur text-xs font-semibold uppercase tracking-widest mb-6">
+          <span class="w-2 h-2 rounded-full bg-accent-500 animate-pulse"></span>
+          Parlamentarni izbori 2027.
+        </div>
+        <h1 class="text-display-1 mb-6 text-balance">Hrvatska bez kompromisa s korupcijom.</h1>
+        <p class="text-lead text-most-100 mb-8 max-w-2xl">
+          MOST je oporba koja postavlja pitanja na koja drugi šute. Borba za transparentne institucije, neovisno pravosuđe i odgovornu lokalnu vlast.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-3">
+          <a href="/pridruzi-se" class="btn-primary text-base px-7 py-3.5">Pridruži se MOST-u</a>
+          <a href="/policy" class="btn-ghost bg-white/10 text-white hover:bg-white/20 text-base px-7 py-3.5">Što zastupamo</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- POLICY PILLARS -->
+  <section class="py-16 md:py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">Naše prioritetne politike</p>
+        <h2 class="text-h1 max-w-2xl mx-auto text-balance">Što gradimo za Hrvatsku.</h2>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {policyPillars.map((pillar) => (
+          <a href={`/policy/${pillar.slug}`} class="card group">
+            <div class="text-4xl mb-4">{pillar.icon}</div>
+            <h3 class="text-h3 mb-2 group-hover:text-most-700 transition">{pillar.title}</h3>
+            <p class="text-sm text-slate-600">{pillar.desc}</p>
+            <span class="mt-4 inline-flex items-center text-sm font-semibold text-most-700">
+              Saznaj više →
+            </span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- DELIVERY TRACKER -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-2 gap-12 items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-accent-500 mb-3">Što smo postigli</p>
+          <h2 class="text-h1 mb-6 text-balance">Rad u Saboru se mjeri rezultatima.</h2>
+          <p class="text-lead text-slate-600 mb-6">
+            U mandatu 2024-2028, MOST zastupnici su najaktivnija oporbena snaga u Saboru. Pratimo svaki dan i otvoreno pokazujemo rad.
+          </p>
+          <a href="/transparentnost" class="btn-secondary">Pogledaj sve metrike</a>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+          {deliveries.map((item) => (
+            <div class="card text-center">
+              <div class="text-5xl font-black text-accent-500 mb-2">{item.num}</div>
+              <div class="text-sm font-semibold text-slate-900">{item.label}</div>
+              <div class="text-xs text-slate-500 mt-1">{item.sub}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RECENT NEWS -->
+  <section class="py-16 md:py-24 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-end justify-between mb-12">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">Najnovije</p>
+          <h2 class="text-h1">Vijesti iz MOST-a</h2>
+        </div>
+        <a href="/vijesti" class="hidden md:inline-flex btn-ghost">Sve vijesti →</a>
+      </div>
+      <div class="grid md:grid-cols-3 gap-6">
+        {recentNews.map((post) => (
+          <article class="card !p-0 overflow-hidden flex flex-col">
+            <div class="aspect-video bg-slate-200"></div>
+            <div class="p-6 flex-1 flex flex-col">
+              <time class="text-xs text-slate-500 mb-2">{post.date}</time>
+              <h3 class="text-h3 mb-2 hover:text-most-700 transition">
+                <a href={`/vijesti/${post.slug}`}>{post.title}</a>
+              </h3>
+              <p class="text-sm text-slate-600 flex-1">{post.excerpt}</p>
+              <a href={`/vijesti/${post.slug}`} class="mt-4 text-sm font-semibold text-most-700">Pročitaj →</a>
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- MEMBERS -->
+  <section class="py-16 md:py-24 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">Naš tim</p>
+        <h2 class="text-h1 max-w-2xl mx-auto text-balance">Saborski zastupnici MOST-a.</h2>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {featuredMembers.map((m) => (
+          <a href={`/clanovi/${m.slug}`} class="card text-center group">
+            <div class="aspect-square rounded-full bg-most-100 mx-auto w-24 mb-4"></div>
+            <h3 class="font-bold group-hover:text-most-700">{m.name}</h3>
+            <p class="text-sm text-slate-500 mt-1">{m.role}</p>
+          </a>
+        ))}
+      </div>
+      <div class="text-center mt-8">
+        <a href="/clanovi" class="btn-ghost">Vidi sve zastupnike →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section class="bg-gradient-to-br from-accent-500 to-accent-600 text-white py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-h1 mb-4 text-balance">Tvoj glas mijenja Hrvatsku.</h2>
+      <p class="text-lead opacity-90 mb-8 max-w-2xl mx-auto">
+        Pridruži se 4,000+ članova koji svakim danom rade na poštenoj državi. Volonteri, donacije, lokalna grupa — odaberi kako pomaže.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/doniraj" class="btn bg-white text-accent-600 hover:bg-slate-50 px-7 py-3.5 text-base">Doniraj danas</a>
+        <a href="/volontiraj" class="btn bg-transparent text-white border-2 border-white hover:bg-white/10 px-7 py-3.5 text-base">Postani volonter</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- NEWSLETTER -->
+  <section class="py-16 bg-most-50">
+    <div class="container-prose text-center">
+      <h2 class="text-h2 mb-2">Bitne vijesti, jednom tjedno.</h2>
+      <p class="text-slate-600 mb-6">Bez spama. Sažetak najvažnijeg iz Sabora i lokalne politike.</p>
+      <form class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
+        <label for="newsletter-email" class="sr-only">E-mail adresa</label>
+        <input type="email" id="newsletter-email" placeholder="tvoja@email.hr" required
+          class="flex-1 px-4 py-3 rounded-lg border border-slate-300 focus:border-most-500 focus:outline-none" />
+        <button type="submit" class="btn-primary">Pretplati se</button>
+      </form>
+      <p class="text-xs text-slate-500 mt-3">GDPR-compliant. Možeš se odjaviti u jednom kliku.</p>
+    </div>
+  </section>
+</BaseLayout>

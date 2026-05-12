@@ -1,0 +1,166 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import FAQPageSchema from '@/components/schema/FAQPageSchema.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+
+const policies = {
+  'korupcija-i-transparentnost': {
+    title: 'Antikorupcija i transparentnost',
+    description: 'Kako MOST predlaže borbu protiv sustavne korupcije u Hrvatskoj — konkretne zakonske inicijative i mjere.',
+    heroStat: { num: '63.', label: 'Hrvatska na CPI ljestvici Transparency International 2025.', sub: 'od 180 zemalja' },
+    position: 'MOST se zalaže za nultu toleranciju prema korupciji, jaču ulogu DORH-a i USKOK-a, te transparentnost svake javne nabave iznad 200.000 €.',
+    faqs: [
+      {
+        question: 'Što MOST predlaže za borbu protiv korupcije u javnoj nabavi?',
+        answer: 'MOST predlaže obvezne javne registre svih ugovora iznad 200.000 EUR, real-time objavu na portalu javne nabave, te zabranu dodjele poslova firmama u vlasništvu članova obitelji odlučitelja u prethodnih 5 godina. U 2024. iniciirali smo izmjene Zakona o javnoj nabavi koje su djelomično usvojene.',
+      },
+      {
+        question: 'Kako MOST glasa u Saboru po antikorupcijskim zakonima?',
+        answer: 'MOST je u 2024-2025 podržao 8 od 10 antikorupcijskih prijedloga, uključujući jačanje Povjerenstva za sukob interesa i izmjene Kaznenog zakona. Glasali smo protiv prijedloga koji su slabili nezavisnost USKOK-a.',
+      },
+      {
+        question: 'Tko je nadležan za korupciju u Hrvatskoj?',
+        answer: 'Tri institucije imaju ključne uloge: DORH (Državno odvjetništvo Republike Hrvatske) provodi optužbe, USKOK (Ured za suzbijanje korupcije i organiziranog kriminaliteta) je specijalizirana jedinica unutar DORH-a, a PNUSKOK (Policijski nacionalni ured za suzbijanje korupcije i organiziranog kriminaliteta) je policijski pandan. MOST se zalaže za njihovu kadrovsku i financijsku neovisnost.',
+      },
+      {
+        question: 'Što je whistleblower zakon i koliko štiti u Hrvatskoj?',
+        answer: 'Zakon o zaštiti prijavitelja nepravilnosti (2019, izmijenjen 2022) štiti zaposlenike koji prijavljuju nepravilnosti od otkaza i odmazde. U praksi je zaštita slaba — MOST predlaže anonimne kanale prijave i naknadu za dokazane prijave koje rezultiraju kaznenim postupkom.',
+      },
+      {
+        question: 'Što kažu europski standardi o korupciji?',
+        answer: 'Europska komisija godišnje objavljuje Izvješće o vladavini prava u kojem analizira Hrvatsku. GRECO (Grupa zemalja Vijeća Europe protiv korupcije) izdaje preporuke koje Hrvatska sporo provodi — od 32 preporuke iz 2017., do 2024. provedeno je samo 19. MOST traži obvezno polugodišnje izvješće Vladi.',
+      },
+      {
+        question: 'Kako građani mogu prijaviti korupciju?',
+        answer: 'Postoje tri kanala: (1) USKOK telefonska linija 0800 102 102 i e-mail uskok@dorh.hr; (2) Povjerenstvo za sukob interesa za prijave dužnosnika na sukobinteresa@gov.hr; (3) Pučki pravobranitelj za sustavne nepravilnosti. MOST u Saboru zagovara jedinstveni anonimni portal s mogućnošću praćenja statusa prijave.',
+      },
+      {
+        question: 'Koje su najveće korupcijske afere zadnjih 5 godina?',
+        answer: 'Među najpoznatije spadaju: AGROKOR/Todorić (presuda 2024.), aferaPlin/INA-Mol arbitraža, slučaj A1/HEP, slučajevi javne nabave za COVID respiratore, te više slučajeva nepravilne dodjele EU sredstava. MOST je u 6 od 11 slučajeva tražio izvanrednu saborsku raspravu.',
+      },
+      {
+        question: 'Što MOST predlaže za jačanje DORH-a i USKOK-a?',
+        answer: 'Predlažemo: (1) odvajanje USKOK-a u samostalno tijelo van DORH-a; (2) automatsko 5-godišnje produljenje mandata Glavnom državnom odvjetniku ako tako odluči 2/3 saborske većine, čime se sprječava politički pritisak; (3) povećanje broja specijaliziranih državnih odvjetnika za korupciju s trenutnih 28 na 50; (4) namjenski proračun bez mogućnosti smanjenja od strane izvršne vlasti.',
+      },
+    ],
+    initiatives: [
+      { title: 'Zakon o javnoj nabavi 2024', desc: 'Izmjene koje proširuju kriterije transparentnosti.', status: 'Djelomično usvojeno' },
+      { title: 'Inicijativa "Stakeholder registar"', desc: 'Javni registar stvarnih vlasnika svih državnih ugovora.', status: 'U raspravi' },
+      { title: 'Zakon o nezavisnosti USKOK-a', desc: 'Odvajanje USKOK-a u samostalno tijelo.', status: 'Pripremlja se' },
+    ],
+    responsibleMembers: [
+      { slug: 'nikola-grmoja', name: 'Nikola Grmoja' },
+      { slug: 'zvonimir-troskot', name: 'Zvonimir Troskot' },
+    ],
+  },
+};
+
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'korupcija-i-transparentnost' } },
+    { params: { slug: 'lokalna-samouprava-jls' } },
+    { params: { slug: 'pravosuđe' } },
+    { params: { slug: 'gospodarstvo-i-poduzetnistvo' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const policy = policies[slug as keyof typeof policies] ?? policies['korupcija-i-transparentnost'];
+const url = `https://most-hrvatska.hr/policy/${slug}`;
+---
+
+<BaseLayout title={`${policy.title} — pozicija MOST-a`} description={policy.description}>
+  <FAQPageSchema slot="head" faqs={policy.faqs} />
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'Što zastupamo', url: 'https://most-hrvatska.hr/policy' },
+    { name: policy.title, url },
+  ]} />
+
+  <nav class="bg-slate-50 border-b border-slate-200 py-3" aria-label="Breadcrumb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-slate-600">
+      <a href="/" class="hover:text-most-700">Početna</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <a href="/policy" class="hover:text-most-700">Što zastupamo</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <span class="text-slate-900 font-medium">{policy.title}</span>
+    </div>
+  </nav>
+
+  <!-- HERO STAT -->
+  <section class="bg-most-700 text-white py-12 md:py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 gap-8 items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-widest text-most-200 mb-3">Politika MOST-a</p>
+          <h1 class="text-display-2 mb-4 text-balance">{policy.title}</h1>
+          <p class="text-lead text-most-100">{policy.position}</p>
+        </div>
+        <div class="bg-most-800 rounded-2xl p-8 text-center">
+          <div class="text-7xl font-black text-accent-500 mb-2">{policy.heroStat.num}</div>
+          <div class="text-most-100 font-semibold">{policy.heroStat.label}</div>
+          <div class="text-sm text-most-300 mt-2">{policy.heroStat.sub}</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="py-16 md:py-20 bg-white">
+    <div class="container-prose">
+      <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">Najčešća pitanja</p>
+      <h2 class="text-h1 mb-8">Što trebaš znati o ovoj politici.</h2>
+      <div class="space-y-3">
+        {policy.faqs.map((faq) => (
+          <details class="card cursor-pointer">
+            <summary class="font-semibold text-lg list-none flex items-start justify-between gap-4">
+              <span>{faq.question}</span>
+              <span class="text-most-700 text-2xl leading-none flex-shrink-0">+</span>
+            </summary>
+            <p class="mt-4 text-slate-700 leading-relaxed">{faq.answer}</p>
+          </details>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- INITIATIVES -->
+  <section class="py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="text-h1 mb-8 text-center">Naše inicijative</h2>
+      <div class="grid md:grid-cols-3 gap-6">
+        {policy.initiatives.map((init) => (
+          <div class="card">
+            <span class="badge-accent mb-3">{init.status}</span>
+            <h3 class="text-h3 mb-2">{init.title}</h3>
+            <p class="text-sm text-slate-600">{init.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- RESPONSIBLE MEMBERS -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-h2 mb-8">Tko vodi ovo područje</h2>
+      <div class="flex flex-wrap justify-center gap-6">
+        {policy.responsibleMembers.map((m) => (
+          <a href={`/clanovi/${m.slug}`} class="card text-center w-48">
+            <div class="aspect-square rounded-full bg-most-100 mx-auto w-20 mb-3"></div>
+            <p class="font-bold text-slate-900">{m.name}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="bg-accent-500 text-white py-16">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-h1 mb-4">Slažeš se s nama?</h2>
+      <p class="text-lead opacity-90 mb-6">Pridruži se MOST-u i pomozi da gradimo poštene institucije u Hrvatskoj.</p>
+      <a href="/pridruzi-se" class="btn bg-white text-accent-600 hover:bg-slate-50 px-8 py-4">Postani član</a>
+    </div>
+  </section>
+</BaseLayout>

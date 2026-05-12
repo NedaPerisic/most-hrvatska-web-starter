@@ -1,0 +1,43 @@
+---
+const orgSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'PoliticalParty',
+  '@id': 'https://most-hrvatska.hr/#organization',
+  name: 'MOST Hrvatska',
+  alternateName: ['MOST', 'Most nezavisnih lista', 'MOST stranka'],
+  url: 'https://most-hrvatska.hr',
+  logo: 'https://most-hrvatska.hr/logo.png',
+  description: 'Stranka za transparentnost, odgovornost i poštene institucije u Hrvatskoj.',
+  foundingDate: '2012-08-25',
+  foundingLocation: { '@type': 'Place', name: 'Metković, Hrvatska' },
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'Trg žrtava fašizma 5',
+    addressLocality: 'Zagreb',
+    postalCode: '10000',
+    addressCountry: 'HR',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    email: 'info@most-hrvatska.hr',
+    contactType: 'customer service',
+    areaServed: 'HR',
+    availableLanguage: ['Croatian'],
+  },
+  sameAs: [
+    'https://x.com/MostHrvatska',
+    'https://facebook.com/MostHrvatska',
+    'https://instagram.com/MostHrvatska',
+    'https://youtube.com/@MostHrvatska',
+    'https://tiktok.com/@MostHrvatska',
+    'https://hr.wikipedia.org/wiki/Most_(politi%C4%8Dka_stranka)',
+  ],
+  memberOf: {
+    '@type': 'Organization',
+    name: 'European Conservatives and Reformists Party',
+    url: 'https://ecrparty.eu',
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(orgSchema)} />

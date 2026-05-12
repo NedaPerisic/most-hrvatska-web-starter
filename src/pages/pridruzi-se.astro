@@ -1,0 +1,106 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Pridruži se MOST-u — postani član"
+  description="Postani član MOST-a u 3 koraka. Članarina 12 €/godišnje pokriva organizacijske troškove i članske beneficije."
+>
+  <section class="bg-most-700 text-white py-12 md:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-xs font-bold uppercase tracking-widest text-most-200 mb-3">Pridruži se</p>
+      <h1 class="text-display-2 mb-4 text-balance">Postani član MOST-a.</h1>
+      <p class="text-lead text-most-100 max-w-xl mx-auto">
+        4,200+ članova u Hrvatskoj. Lokalne grupe u 17 gradova. Članarina 12 €/godišnje.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-12 md:py-20 bg-slate-50">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+      <form class="bg-white rounded-2xl shadow-xl p-6 md:p-10 space-y-5">
+        <!-- Step indicator -->
+        <div class="flex items-center gap-2 text-xs font-semibold uppercase tracking-widest mb-2">
+          <span class="text-most-700">1. Osobni podaci</span>
+          <span class="text-slate-300">→</span>
+          <span class="text-slate-400">2. Lokacija</span>
+          <span class="text-slate-300">→</span>
+          <span class="text-slate-400">3. Plaćanje</span>
+        </div>
+
+        <h2 class="text-h2">Pridruži se u 3 koraka</h2>
+        <p class="text-slate-600 text-sm">Postupak traje manje od 3 minute. Tri polja za početak.</p>
+
+        <!-- Form fields (only 3 to start - low friction) -->
+        <div class="space-y-4">
+          <div>
+            <label for="name" class="block text-sm font-semibold text-slate-700 mb-1.5">Ime i prezime *</label>
+            <input id="name" type="text" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-most-500 focus:outline-none" placeholder="npr. Ana Horvat" />
+          </div>
+
+          <div>
+            <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">E-mail adresa *</label>
+            <input id="email" type="email" required class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-most-500 focus:outline-none" placeholder="ana@email.hr" />
+          </div>
+
+          <div>
+            <label for="phone" class="block text-sm font-semibold text-slate-700 mb-1.5">Mobitel (opcionalno)</label>
+            <input id="phone" type="tel" class="w-full px-4 py-3 border border-slate-300 rounded-lg focus:border-most-500 focus:outline-none" placeholder="+385 91 123 4567" />
+          </div>
+        </div>
+
+        <!-- Consent (GDPR) -->
+        <div class="space-y-3 pt-4 border-t border-slate-200">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" required class="mt-1 w-4 h-4" />
+            <span class="text-sm text-slate-700">
+              Slažem se sa <a href="/statut" class="text-most-700 underline">Statutom MOST-a</a> i <a href="/etos-clana" class="text-most-700 underline">Etosom člana</a>.
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" required class="mt-1 w-4 h-4" />
+            <span class="text-sm text-slate-700">
+              Slažem se sa obradom osobnih podataka prema našoj <a href="/privatnost" class="text-most-700 underline">Politici privatnosti</a>.
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" class="mt-1 w-4 h-4" />
+            <span class="text-sm text-slate-700">
+              Želim primati newsletter MOST-a (1x tjedno, bez spama).
+            </span>
+          </label>
+        </div>
+
+        <button type="submit" class="btn-primary w-full text-base py-4">Nastavi →</button>
+
+        <p class="text-xs text-slate-500 text-center">
+          Nakon registracije, naši lokalni koordinatori će te kontaktirati za upoznavanje s lokalnom grupom.
+        </p>
+      </form>
+
+      <!-- Benefits -->
+      <div class="mt-12 grid sm:grid-cols-2 gap-4">
+        <div class="card">
+          <div class="text-2xl mb-3">🗳️</div>
+          <h3 class="font-bold mb-1">Glasaj na unutarstranačkim izborima</h3>
+          <p class="text-sm text-slate-600">Biraj predsjedništvo, kandidate, lokalne čelnike.</p>
+        </div>
+        <div class="card">
+          <div class="text-2xl mb-3">📚</div>
+          <h3 class="font-bold mb-1">Pristup članskim materijalima</h3>
+          <p class="text-sm text-slate-600">Stručne analize, internal briefs, edukacija.</p>
+        </div>
+        <div class="card">
+          <div class="text-2xl mb-3">🤝</div>
+          <h3 class="font-bold mb-1">Lokalna grupa u tvom gradu</h3>
+          <p class="text-sm text-slate-600">Mjesečni sastanci, akcije, druženja.</p>
+        </div>
+        <div class="card">
+          <div class="text-2xl mb-3">🎯</div>
+          <h3 class="font-bold mb-1">Sudjeluj u oblikovanju politika</h3>
+          <p class="text-sm text-slate-600">Radne skupine, predlaganje inicijativa.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

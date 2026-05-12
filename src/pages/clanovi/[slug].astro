@@ -1,0 +1,160 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import PersonSchema from '@/components/schema/PersonSchema.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+
+// In production, this comes from Sanity. For mockup, hardcoded.
+const members = {
+  'nikola-grmoja': {
+    name: 'Nikola Grmoja',
+    jobTitle: 'Predsjednik Kluba zastupnika MOST-a',
+    description: 'Saborski zastupnik MOST-a, predsjednik Kluba zastupnika i jedan od najprofiliranijih oporbenih političara u Hrvatskoj. Fokus na transparentnost javnih financija, antikorupciju i samodostatnost u poljoprivredi.',
+    image: 'https://most-hrvatska.hr/clanovi/nikola-grmoja.jpg',
+    email: 'grmoja@most-hrvatska.hr',
+    sameAs: [
+      'https://x.com/NikolaGrmoja',
+      'https://www.facebook.com/grmoja',
+      'https://www.sabor.hr/hr/zastupnici/nikola-grmoja',
+    ],
+    alumniOf: 'Filozofski fakultet Sveučilišta u Zagrebu',
+    birthDate: '1984-04-15',
+    birthPlace: 'Metković, Hrvatska',
+    bio: [
+      'Nikola Grmoja rođen je 15. travnja 1984. u Metkoviću. Diplomirao je povijest i filozofiju na Filozofskom fakultetu Sveučilišta u Zagrebu. Prije ulaska u politiku radio je kao novinar i nastavnik povijesti.',
+      'Saborski zastupnik MOST-a od 2016. godine, jedan je od osnivača stranke. U mandatu 2024-2028 obnaša funkciju predsjednika Kluba zastupnika i potpredsjednika Odbora za europske poslove.',
+      'Među najprofiliranijim je oporbenim glasovima u Saboru. Posebno je aktivan u temama javnih financija, transparentnosti državnih poduzeća i borbe protiv korupcije u javnoj nabavi. Autor je više inicijativa za izmjene Zakona o javnoj nabavi i Zakona o sprječavanju sukoba interesa.',
+    ],
+    expertise: ['Javne financije', 'Antikorupcija', 'EU politike', 'Poljoprivreda', 'Saborska procedura'],
+    saborRoles: ['Predsjednik Kluba zastupnika MOST', 'Potpredsjednik Odbora za europske poslove', 'Član Odbora za financije i državni proračun'],
+    accomplishments: [
+      'Iniciranje izmjena Zakona o javnoj nabavi (2024) — pojačani kriteriji transparentnosti',
+      'Otkrivanje afere oko nabave u jednom državnom poduzeću (2025) — dovelo do USKOK-ove istrage',
+      'Prijedlog Zakona o samodostatnosti u poljoprivredi (2026)',
+      '124 saborska pitanja u 2024 — najviše po zastupniku u oporbi',
+      'Predstavljanje MOST-a u međunarodnim political networks (ECR Party)',
+    ],
+  },
+};
+
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'nikola-grmoja' } },
+    { params: { slug: 'bozo-petrov' } },
+    { params: { slug: 'marin-miletic' } },
+    { params: { slug: 'zvonimir-troskot' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const member = members[slug as keyof typeof members] ?? members['nikola-grmoja'];
+const url = `https://most-hrvatska.hr/clanovi/${slug}`;
+---
+
+<BaseLayout
+  title={`${member.name} — ${member.jobTitle}`}
+  description={member.description}
+  type="profile"
+  ogImage={member.image}
+>
+  <PersonSchema slot="head"
+    name={member.name}
+    slug={slug as string}
+    jobTitle={member.jobTitle}
+    description={member.description}
+    image={member.image}
+    email={member.email}
+    sameAs={member.sameAs}
+    alumniOf={member.alumniOf}
+    birthDate={member.birthDate}
+    birthPlace={member.birthPlace}
+  />
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'Zastupnici', url: 'https://most-hrvatska.hr/clanovi' },
+    { name: member.name, url },
+  ]} />
+
+  <!-- Breadcrumbs visible -->
+  <nav class="bg-slate-50 border-b border-slate-200 py-3" aria-label="Breadcrumb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-slate-600">
+      <a href="/" class="hover:text-most-700">Početna</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <a href="/clanovi" class="hover:text-most-700">Zastupnici</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <span class="text-slate-900 font-medium">{member.name}</span>
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="bg-white border-b border-slate-200 py-12 md:py-16">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-3 gap-8 items-start">
+        <div class="lg:col-span-1">
+          <div class="aspect-square rounded-2xl bg-gradient-to-br from-most-100 to-most-200 overflow-hidden">
+            <!-- placeholder for member photo -->
+            <div class="flex items-center justify-center h-full text-9xl text-most-700/20">{member.name[0]}</div>
+          </div>
+        </div>
+        <div class="lg:col-span-2">
+          <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">Saborski zastupnik MOST-a</p>
+          <h1 class="text-display-2 mb-4">{member.name}</h1>
+          <p class="text-lead text-slate-600 mb-6">{member.jobTitle}</p>
+          <p class="text-base text-slate-700 mb-6">{member.description}</p>
+          <div class="flex flex-wrap gap-3">
+            <a href={`mailto:${member.email}`} class="btn-secondary">Pošalji pitanje</a>
+            <a href={member.sameAs[0]} target="_blank" rel="noopener" class="btn-ghost">Slijedi na X →</a>
+          </div>
+          <div class="flex flex-wrap gap-2 mt-6">
+            {member.expertise.map((tag) => (
+              <span class="badge-most">{tag}</span>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- BIO + DETAILS -->
+  <section class="py-12 md:py-16 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid lg:grid-cols-3 gap-8">
+        <!-- Bio -->
+        <div class="lg:col-span-2 prose prose-slate max-w-none">
+          <h2 class="text-h2 !mt-0">Biografija</h2>
+          {member.bio.map((para) => <p>{para}</p>)}
+
+          <h2 class="text-h2 mt-10">Ključna postignuća</h2>
+          <ul>
+            {member.accomplishments.map((item) => <li>{item}</li>)}
+          </ul>
+        </div>
+
+        <!-- Sidebar -->
+        <aside class="space-y-6">
+          <div class="card">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Sabor i odbori</h3>
+            <ul class="space-y-2">
+              {member.saborRoles.map((role) => (
+                <li class="text-sm text-slate-700 flex gap-2">
+                  <span class="text-most-700">▸</span>
+                  <span>{role}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="card bg-most-700 text-white !border-most-700">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-most-200 mb-3">Pitaj zastupnika</h3>
+            <p class="text-sm text-most-100 mb-4">Imaš pitanje za {member.name.split(' ')[0]}? Pošalji direktno.</p>
+            <a href={`mailto:${member.email}`} class="btn bg-accent-500 text-white w-full">{member.email}</a>
+          </div>
+
+          <div class="card">
+            <h3 class="text-xs font-bold uppercase tracking-widest text-slate-500 mb-3">Recent statements</h3>
+            <p class="text-sm text-slate-500">Auto-feed iz news koji spominju {member.name.split(' ')[0]}a.</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

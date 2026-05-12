@@ -1,0 +1,67 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+---
+
+<BaseLayout title="O MOST-u — povijest, struktura, misija" description="MOST je hrvatska politička stranka osnovana 2012. godine. Saznaj tko smo, što radimo i zašto.">
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'O nama', url: 'https://most-hrvatska.hr/o-nama' },
+  ]} />
+
+  <section class="bg-white border-b border-slate-200 py-12 md:py-20">
+    <div class="container-prose">
+      <p class="text-xs font-bold uppercase tracking-widest text-most-700 mb-3">O nama</p>
+      <h1 class="text-display-2 mb-6 text-balance">MOST: 14 godina nezavisnosti.</h1>
+      <p class="text-lead text-slate-600">
+        Osnovani 2012. u Metkoviću kao odgovor na nepoštene institucije i sustavnu korupciju. Danas: saborska oporba s 11 zastupnika u 17 lokalnih organizacija u Hrvatskoj.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-12 bg-slate-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid md:grid-cols-3 gap-6">
+      <div class="card text-center">
+        <div class="text-5xl font-black text-most-700 mb-2">11</div>
+        <p class="font-semibold">Saborskih zastupnika</p>
+        <p class="text-sm text-slate-500 mt-1">Mandat 2024-2028</p>
+      </div>
+      <div class="card text-center">
+        <div class="text-5xl font-black text-most-700 mb-2">4,200+</div>
+        <p class="font-semibold">Aktivnih članova</p>
+        <p class="text-sm text-slate-500 mt-1">U cijeloj Hrvatskoj</p>
+      </div>
+      <div class="card text-center">
+        <div class="text-5xl font-black text-most-700 mb-2">17</div>
+        <p class="font-semibold">Lokalnih organizacija</p>
+        <p class="text-sm text-slate-500 mt-1">Od Pule do Vukovara</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="py-16 bg-white">
+    <div class="container-prose prose prose-slate prose-lg max-w-none">
+      <h2>Kako je MOST nastao</h2>
+      <p>MOST (Most nezavisnih lista) osnovan je 25. kolovoza 2012. godine u Metkoviću. Skupina nezavisnih lista iz cijele Hrvatske udružila se u zajedničku političku platformu kao odgovor na potpunu dominaciju dvije velike stranke (HDZ i SDP) u hrvatskoj politici.</p>
+
+      <h2>Što nas razlikuje</h2>
+      <p>MOST nije ni HDZ ni SDP. Naša pozicija je <strong>centristička i konzervativno-liberalna</strong>, ali našu praktičnu politiku određuje princip: <em>što je dobro za hrvatske građane, a ne za stranačke kadrove</em>.</p>
+
+      <p>Konkretno: u svakom mandatu predlagali smo zakone protiv korupcije, za jaču ulogu DORH-a i USKOK-a, za transparentnu javnu nabavu, te za ograničenje konflikta interesa među dužnosnicima. Mnoge od tih ideja su, nakon početnih odbijanja, ipak postale dio zakona.</p>
+
+      <h2>Naše jezgrene vrijednosti</h2>
+      <ul>
+        <li><strong>Transparentnost</strong> — sve donacije, sve ugovore, sva odluke moraju biti javne</li>
+        <li><strong>Antikorupcija</strong> — nulta tolerancija prema bilo kakvom pogodovanju ili konfliktu interesa</li>
+        <li><strong>Subsidijarnost</strong> — odluke se trebaju donositi što bliže građanima (jaka lokalna samouprava)</li>
+        <li><strong>Stručnost</strong> — politika je javna usluga, ne karijera</li>
+        <li><strong>Hrvatski interes</strong> — u EU okvirima, ali bez gubitka nacionalnog suvereniteta</li>
+      </ul>
+
+      <h2>Naša mreža</h2>
+      <p>U Europskom parlamentu MOST je dio <strong>Europskih konzervatora i reformista (ECR)</strong> — političke skupine koja okuplja konzervativne i euroskeptične stranke iz cijele EU.</p>
+
+      <p>U Hrvatskoj smo jedina parlamentarna stranka s aktivnim lokalnim uredom u svih 17 najvećih gradova.</p>
+    </div>
+  </section>
+</BaseLayout>

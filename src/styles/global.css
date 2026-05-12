@@ -1,0 +1,79 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-most: 0 61 122;
+    --color-accent: 255 107 53;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply font-sans text-slate-900 bg-white antialiased;
+    font-feature-settings: 'ss01', 'cv11';
+  }
+
+  /* Croatian dijakritici support */
+  body {
+    text-rendering: optimizeLegibility;
+  }
+
+  /* Focus visible (a11y) */
+  *:focus-visible {
+    @apply outline-2 outline-offset-2 outline-most-500;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  /* Selection */
+  ::selection {
+    @apply bg-most-700 text-white;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-lg font-semibold text-sm transition-all duration-200 focus-visible:ring-2 focus-visible:ring-offset-2;
+    min-height: 44px;
+  }
+  .btn-primary {
+    @apply btn bg-accent-500 text-white hover:bg-accent-600 focus-visible:ring-accent-500 active:scale-95;
+  }
+  .btn-secondary {
+    @apply btn bg-most-700 text-white hover:bg-most-800 focus-visible:ring-most-500 active:scale-95;
+  }
+  .btn-ghost {
+    @apply btn bg-transparent text-most-700 hover:bg-most-50 focus-visible:ring-most-500;
+  }
+
+  .container-prose {
+    @apply max-w-prose mx-auto px-6;
+  }
+
+  .card {
+    @apply bg-white rounded-xl border border-slate-200 p-6 transition-shadow hover:shadow-lg;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold uppercase tracking-wide;
+  }
+  .badge-most { @apply badge bg-most-50 text-most-700; }
+  .badge-accent { @apply badge bg-accent-50 text-accent-600; }
+  .badge-success { @apply badge bg-emerald-50 text-emerald-700; }
+
+  /* Skip to content (a11y) */
+  .skip-to-content {
+    @apply absolute left-4 top-4 -translate-y-32 focus:translate-y-0 bg-most-700 text-white px-4 py-2 rounded-lg z-50 transition-transform;
+  }
+}

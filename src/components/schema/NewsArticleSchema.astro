@@ -1,0 +1,43 @@
+---
+interface Props {
+  headline: string;
+  description: string;
+  url: string;
+  image: string;
+  datePublished: string;
+  dateModified?: string;
+  authorName: string;
+  authorSlug?: string;
+  articleSection?: string;
+  keywords?: string[];
+}
+
+const {
+  headline, description, url, image,
+  datePublished, dateModified = datePublished,
+  authorName, authorSlug, articleSection = 'Politika', keywords = [],
+} = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'NewsArticle',
+  headline,
+  description,
+  image: { '@type': 'ImageObject', url: image, width: 1920, height: 1080 },
+  datePublished,
+  dateModified,
+  author: {
+    '@type': 'Person',
+    name: authorName,
+    ...(authorSlug && { url: `https://most-hrvatska.hr/clanovi/${authorSlug}` }),
+  },
+  publisher: { '@id': 'https://most-hrvatska.hr/#organization' },
+  mainEntityOfPage: { '@type': 'WebPage', '@id': url },
+  articleSection,
+  ...(keywords.length > 0 && { keywords: keywords.join(', ') }),
+  inLanguage: 'hr-HR',
+  isAccessibleForFree: true,
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

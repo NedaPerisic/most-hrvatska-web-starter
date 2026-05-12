@@ -1,0 +1,129 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+
+const amounts = [
+  { value: 10, label: '10 €', desc: 'Tiska 200 letaka' },
+  { value: 25, label: '25 €', desc: 'Pomaže lokalnoj kampanji', popular: true },
+  { value: 50, label: '50 €', desc: 'Pokriva društvene reklame' },
+  { value: 100, label: '100 €', desc: 'Financira saborski izvještaj' },
+];
+---
+
+<BaseLayout
+  title="Doniraj MOST-u — pošteno, transparentno, hrvatski"
+  description="Donacija MOST-u podržava neovisnu oporbu u Hrvatskoj. Sve donacije su javno objavljene. Plaćanje karticom ili bankovnom uplatom."
+>
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'Doniraj', url: 'https://most-hrvatska.hr/doniraj' },
+  ]} />
+
+  <!-- HERO -->
+  <section class="bg-gradient-to-br from-accent-500 to-accent-600 text-white py-12 md:py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-xs font-bold uppercase tracking-widest opacity-90 mb-3">Doniraj</p>
+      <h1 class="text-display-2 mb-4 text-balance">Tvoja donacija je naša neovisnost.</h1>
+      <p class="text-lead opacity-90 max-w-2xl mx-auto">
+        MOST se financira isključivo članarinom i donacijama građana — bez koncesija i tiha podrške velikih kompanija. Sve je javno.
+      </p>
+    </div>
+  </section>
+
+  <!-- DONATION FORM -->
+  <section class="py-12 md:py-20 bg-slate-50">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-2xl shadow-xl p-6 md:p-10">
+        <!-- Progress -->
+        <div class="flex items-center gap-2 mb-8 text-xs font-semibold uppercase tracking-widest">
+          <span class="text-accent-500">1. Iznos</span>
+          <span class="text-slate-300">→</span>
+          <span class="text-slate-400">2. Način plaćanja</span>
+          <span class="text-slate-300">→</span>
+          <span class="text-slate-400">3. Potvrda</span>
+        </div>
+
+        <h2 class="text-h2 mb-6">Odaberi iznos donacije</h2>
+
+        <!-- Amount toggle -->
+        <div class="flex gap-2 mb-6 p-1 bg-slate-100 rounded-lg">
+          <button class="flex-1 px-4 py-2 bg-white shadow rounded text-sm font-semibold text-slate-900">Jednokratno</button>
+          <button class="flex-1 px-4 py-2 text-sm font-semibold text-slate-600">Mjesečno</button>
+        </div>
+
+        <!-- Amount grid -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-4">
+          {amounts.map((amt) => (
+            <button class={`relative p-5 rounded-xl border-2 text-center font-bold transition ${amt.popular ? 'border-accent-500 bg-accent-50' : 'border-slate-200 hover:border-most-300'}`}>
+              {amt.popular && (
+                <span class="absolute -top-2 left-1/2 -translate-x-1/2 bg-accent-500 text-white text-[10px] font-bold uppercase px-2 py-0.5 rounded-full whitespace-nowrap">Najčešće</span>
+              )}
+              <div class="text-2xl text-slate-900 mb-1">{amt.label}</div>
+              <div class="text-xs font-medium text-slate-600">{amt.desc}</div>
+            </button>
+          ))}
+        </div>
+
+        <!-- Custom amount -->
+        <div class="mb-6">
+          <label class="block text-sm font-semibold text-slate-700 mb-2">Ili upiši svoj iznos</label>
+          <div class="relative">
+            <input type="number" min="1" placeholder="0" class="w-full pl-12 pr-4 py-3 border border-slate-300 rounded-lg focus:border-most-500 focus:outline-none text-lg" />
+            <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-semibold">€</span>
+          </div>
+        </div>
+
+        <!-- Trust signals -->
+        <div class="bg-slate-50 rounded-lg p-4 mb-6 text-sm text-slate-700">
+          <div class="flex items-start gap-3">
+            <span class="text-emerald-600 text-lg">🛡️</span>
+            <div>
+              <p class="font-semibold mb-1">Sigurno i transparentno.</p>
+              <p class="text-xs">Sve donacije su javno objavljene u <a href="/transparentnost" class="text-most-700 underline">izvještaju o financiranju</a>. Plaćanje preko Stripe-a, podaci nisu pohranjeni kod nas.</p>
+            </div>
+          </div>
+        </div>
+
+        <button class="btn-primary w-full text-base py-4">Nastavi na plaćanje →</button>
+
+        <p class="text-xs text-slate-500 text-center mt-4">
+          Donacijom prihvaćaš naš <a href="/pravilnik-financiranja" class="underline">Pravilnik o financiranju</a>.
+        </p>
+      </div>
+
+      <!-- Alternative: bank transfer -->
+      <div class="mt-8 bg-white rounded-2xl p-6 border border-slate-200">
+        <h3 class="text-lg font-bold mb-3">Doniraj direktno na račun</h3>
+        <div class="space-y-2 text-sm font-mono">
+          <div class="flex justify-between border-b border-slate-100 py-2">
+            <span class="text-slate-500">Primatelj:</span>
+            <span class="font-semibold">MOST — Most nezavisnih lista</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-100 py-2">
+            <span class="text-slate-500">IBAN:</span>
+            <span class="font-semibold">HR12 2402 0061 1006 56392</span>
+          </div>
+          <div class="flex justify-between border-b border-slate-100 py-2">
+            <span class="text-slate-500">Banka:</span>
+            <span class="font-semibold">Erste &amp; Steiermärkische</span>
+          </div>
+          <div class="flex justify-between py-2">
+            <span class="text-slate-500">Poziv na broj:</span>
+            <span class="font-semibold">DON-2026</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRANSPARENCY -->
+  <section class="py-16 bg-white">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-h1 mb-4 text-balance">Sve je javno. Uvijek.</h2>
+      <p class="text-lead text-slate-600 mb-8 max-w-2xl mx-auto">
+        Mjesečno objavljujemo popis donatora, potrošnji i izvještaj o financiranju. Bez tajni.
+      </p>
+      <a href="/transparentnost" class="btn-secondary">Vidi izvještaj o financiranju</a>
+    </div>
+  </section>
+</BaseLayout>

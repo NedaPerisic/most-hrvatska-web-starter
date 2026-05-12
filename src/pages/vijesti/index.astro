@@ -1,0 +1,71 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+
+const news = [
+  { slug: 'grmoja-hrvatska-samodostatnost-hrane', title: 'Grmoja: Hrvatska mora vratiti samodostatnost hrane do 2030.', date: '15.04.2026.', author: 'Nikola Grmoja', category: 'Poljoprivreda', excerpt: 'MOST predlaže paket od 12 mjera za jačanje malih OPG-ova i smanjenje uvoza osnovnih namirnica.' },
+  { slug: 'most-zakon-o-igrama-na-srecu', title: 'MOST: Hitna izmjena Zakona o igrama na sreću', date: '17.03.2026.', author: 'Marin Miletić', category: 'Socijalna politika', excerpt: 'Zaštita maloljetnika i ovisnika o kockanju mora biti prioritet.' },
+  { slug: 'kujundzic-upozorio-na-ovrhe-nad-djetetom', title: 'Kujundžić upozorio: ovrhe nad djecom moraju prestati', date: '05.02.2026.', author: 'Ante Kujundžić', category: 'Pravosuđe', excerpt: 'Tisuće djece u Hrvatskoj imaju aktivne ovrhe.' },
+  { slug: 'troskot-upozorava-na-otpad-u-lici', title: 'Troskot upozorava na opasan otpad u Lici', date: '09.02.2026.', author: 'Zvonimir Troskot', category: 'Okoliš', excerpt: 'Konkretni slučaj nezakonitog odlagališta.' },
+  { slug: 'most-pravilnik-pregledi-sportasa', title: 'MOST: Novi pravilnik o pregledima sportaša', date: '30.04.2026.', author: 'MOST', category: 'Zdravstvo', excerpt: 'Zakonski okvir za sportske preglede djece.' },
+  { slug: 'grmoja-umag-rast-mosta', title: 'Grmoja u Umagu: rast MOST-a u Istri', date: '06.05.2026.', author: 'Nikola Grmoja', category: 'Lokalno', excerpt: 'Predstavljanje lokalnih kandidata.' },
+];
+
+const categories = ['Sve', 'Antikorupcija', 'Pravosuđe', 'Poljoprivreda', 'Zdravstvo', 'Okoliš', 'Lokalno'];
+---
+
+<BaseLayout title="Vijesti i priopćenja" description="Najnovije vijesti, priopćenja i izjave saborskih zastupnika MOST-a.">
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'Vijesti', url: 'https://most-hrvatska.hr/vijesti' },
+  ]} />
+
+  <section class="bg-white border-b border-slate-200 py-12">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h1 class="text-display-2 mb-3">Vijesti</h1>
+      <p class="text-lead text-slate-600">Priopćenja, izjave, inicijative — ažurirano dnevno.</p>
+    </div>
+  </section>
+
+  <!-- Filter bar -->
+  <section class="bg-slate-50 border-b border-slate-200 py-4 sticky top-16 md:top-20 z-30">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 overflow-x-auto">
+      {categories.map((cat, i) => (
+        <button class={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap ${i === 0 ? 'bg-most-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:border-most-300'}`}>
+          {cat}
+        </button>
+      ))}
+    </div>
+  </section>
+
+  <!-- News grid -->
+  <section class="py-12 md:py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {news.map((post) => (
+          <article class="card !p-0 overflow-hidden flex flex-col group">
+            <a href={`/vijesti/${post.slug}`} class="block aspect-video bg-gradient-to-br from-most-100 to-most-200"></a>
+            <div class="p-6 flex-1 flex flex-col">
+              <div class="flex items-center gap-2 mb-3 text-xs">
+                <span class="badge-most">{post.category}</span>
+                <time class="text-slate-500">{post.date}</time>
+              </div>
+              <h2 class="text-h3 mb-2 group-hover:text-most-700 transition">
+                <a href={`/vijesti/${post.slug}`}>{post.title}</a>
+              </h2>
+              <p class="text-sm text-slate-600 flex-1 mb-4">{post.excerpt}</p>
+              <p class="text-xs text-slate-500">Autor: <span class="font-semibold">{post.author}</span></p>
+            </div>
+          </article>
+        ))}
+      </div>
+
+      <!-- Pagination -->
+      <div class="flex justify-center mt-12 gap-2">
+        <button class="btn-ghost" disabled>« Prethodna</button>
+        <span class="px-4 py-2 text-sm text-slate-600">Stranica 1 od 12</span>
+        <a href="?page=2" class="btn-ghost">Sljedeća »</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

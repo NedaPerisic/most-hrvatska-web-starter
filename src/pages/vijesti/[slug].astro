@@ -1,0 +1,146 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import NewsArticleSchema from '@/components/schema/NewsArticleSchema.astro';
+import BreadcrumbSchema from '@/components/schema/BreadcrumbSchema.astro';
+
+const posts = {
+  'grmoja-hrvatska-samodostatnost-hrane': {
+    title: 'Grmoja: Hrvatska mora vratiti samodostatnost hrane do 2030.',
+    description: 'MOST predlaže paket od 12 mjera za jačanje malih OPG-ova i smanjenje uvoza osnovnih namirnica.',
+    datePublished: '2026-04-15T09:00:00+02:00',
+    dateModified: '2026-04-16T11:30:00+02:00',
+    author: 'Nikola Grmoja',
+    authorSlug: 'nikola-grmoja',
+    category: 'Poljoprivreda',
+    image: 'https://most-hrvatska.hr/news/grmoja-poljoprivreda.jpg',
+    keywords: ['poljoprivreda', 'samodostatnost', 'OPG', 'EU fondovi', 'Grmoja'],
+    body: [
+      'Hrvatska danas uvozi gotovo 60% osnovnih namirnica koje bismo mogli proizvoditi sami. To je ne samo ekonomski problem nego i pitanje nacionalne sigurnosti.',
+      '"Pandemija COVID-19 i rat u Ukrajini pokazali su da zemlja koja ne može prehraniti samu sebe ovisi o tuđim odlukama," izjavio je danas u Zagrebu predsjednik Kluba zastupnika MOST-a Nikola Grmoja, predstavljajući paket prijedloga za poljoprivredu.',
+      'MOST-ovih 12 mjera obuhvaća: pojednostavljenu administraciju za male OPG-ove (manje od 50 jutara), porezne olakšice za prve 3 godine djelovanja, garantirani otkup za 6 strateških kultura (pšenica, kukuruz, krumpir, mlijeko, jaja, povrće), te novi model financiranja preko EU fondova.',
+      'Posebno se ističe prijedlog "Mladi na zemlji" — program kojim bi se mladima do 35 godina dodjeljivalo do 5 hektara državne poljoprivredne zemlje na 25-godišnji najam uz nultu kamatu, ako se obvežu na poljoprivrednu proizvodnju.',
+      '"Cilj nije izolacija od EU tržišta. Cilj je da Hrvatska prestane biti trgovačka periferija u koju se uvoze rajčice iz Maroka, jaja iz Poljske i mlijeko iz Slovačke. Možemo proizvoditi i jeftinije i kvalitetnije," dodao je Grmoja.',
+      'Prema podacima Državnog zavoda za statistiku za 2025. godinu, Hrvatska je uvezla poljoprivrednih proizvoda u vrijednosti od 5,2 milijarde eura, dok je izvezla 2,8 milijardi. Negativni saldo iznosi 2,4 milijarde eura.',
+      'MOST će svoj prijedlog formalno podnijeti u saborsku proceduru u svibnju 2026. godine.',
+    ],
+    relatedPosts: [
+      { slug: 'troskot-upozorava-na-otpad-u-lici', title: 'Troskot upozorava na opasan otpad u Lici' },
+      { slug: 'most-pravilnik-pregledi-sportasa', title: 'MOST: Novi pravilnik o pregledima sportaša' },
+    ],
+  },
+};
+
+export async function getStaticPaths() {
+  return [
+    { params: { slug: 'grmoja-hrvatska-samodostatnost-hrane' } },
+  ];
+}
+
+const { slug } = Astro.params;
+const post = posts[slug as keyof typeof posts];
+const url = `https://most-hrvatska.hr/vijesti/${slug}`;
+---
+
+<BaseLayout title={post.title} description={post.description} type="article" ogImage={post.image}>
+  <NewsArticleSchema slot="head"
+    headline={post.title}
+    description={post.description}
+    url={url}
+    image={post.image}
+    datePublished={post.datePublished}
+    dateModified={post.dateModified}
+    authorName={post.author}
+    authorSlug={post.authorSlug}
+    articleSection={post.category}
+    keywords={post.keywords}
+  />
+  <BreadcrumbSchema slot="head" items={[
+    { name: 'Početna', url: 'https://most-hrvatska.hr/' },
+    { name: 'Vijesti', url: 'https://most-hrvatska.hr/vijesti' },
+    { name: post.title, url },
+  ]} />
+
+  <nav class="bg-slate-50 border-b border-slate-200 py-3" aria-label="Breadcrumb">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-sm text-slate-600">
+      <a href="/" class="hover:text-most-700">Početna</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <a href="/vijesti" class="hover:text-most-700">Vijesti</a>
+      <span class="mx-2 text-slate-400">›</span>
+      <span class="text-slate-900 font-medium truncate max-w-md inline-block">{post.title}</span>
+    </div>
+  </nav>
+
+  <article>
+    <!-- Hero -->
+    <header class="bg-white py-12 md:py-16 border-b border-slate-200">
+      <div class="container-prose">
+        <div class="flex items-center gap-2 mb-6 text-sm">
+          <span class="badge-most">{post.category}</span>
+          <time datetime={post.datePublished} class="text-slate-500">
+            {new Date(post.datePublished).toLocaleDateString('hr-HR', { day: 'numeric', month: 'long', year: 'numeric' })}
+          </time>
+        </div>
+        <h1 class="text-display-2 mb-6 text-balance">{post.title}</h1>
+        <p class="text-lead text-slate-600 mb-8">{post.description}</p>
+
+        <!-- Author byline -->
+        <div class="flex items-center gap-4 pt-6 border-t border-slate-200">
+          <div class="w-12 h-12 rounded-full bg-most-100 flex items-center justify-center text-most-700 font-bold">
+            {post.author[0]}
+          </div>
+          <div class="flex-1">
+            <p class="font-semibold text-slate-900">
+              <a href={`/clanovi/${post.authorSlug}`} class="hover:text-most-700">{post.author}</a>
+            </p>
+            <p class="text-xs text-slate-500">Saborski zastupnik MOST-a</p>
+          </div>
+          <!-- Share buttons -->
+          <div class="hidden sm:flex gap-2">
+            <button class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50" aria-label="Podijeli na X">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </button>
+            <button class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50" aria-label="Podijeli na Facebook">
+              <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+            </button>
+            <button class="p-2 rounded-lg border border-slate-200 hover:bg-slate-50" aria-label="Kopiraj link">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/></svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Featured image -->
+    <div class="bg-white">
+      <div class="container-prose">
+        <div class="aspect-video bg-gradient-to-br from-most-100 to-most-300 rounded-xl my-8"></div>
+      </div>
+    </div>
+
+    <!-- Body -->
+    <div class="bg-white pb-16">
+      <div class="container-prose prose prose-slate prose-lg max-w-none">
+        {post.body.map((para, i) => (
+          <p class={i === 0 ? 'first-letter:text-5xl first-letter:font-bold first-letter:text-most-700 first-letter:mr-2 first-letter:float-left first-letter:leading-none' : ''}>
+            {para}
+          </p>
+        ))}
+      </div>
+    </div>
+
+    <!-- Related -->
+    <div class="bg-slate-50 py-12">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-h2 mb-6">Povezane vijesti</h2>
+        <div class="grid md:grid-cols-2 gap-6">
+          {post.relatedPosts.map((rel) => (
+            <a href={`/vijesti/${rel.slug}`} class="card group">
+              <p class="text-xs text-slate-500 mb-2">Povezano</p>
+              <h3 class="text-h3 group-hover:text-most-700 transition">{rel.title}</h3>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>

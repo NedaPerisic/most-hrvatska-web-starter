@@ -1,0 +1,21 @@
+---
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://most-hrvatska.hr/#website',
+  url: 'https://most-hrvatska.hr',
+  name: 'MOST Hrvatska',
+  inLanguage: 'hr-HR',
+  publisher: { '@id': 'https://most-hrvatska.hr/#organization' },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://most-hrvatska.hr/pretraga?q={search_term_string}',
+    },
+    'query-input': 'required name=search_term_string',
+  },
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />

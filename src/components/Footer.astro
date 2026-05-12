@@ -1,0 +1,97 @@
+---
+const sections = [
+  {
+    title: 'Stranka',
+    links: [
+      { href: '/o-nama', label: 'O nama' },
+      { href: '/o-nama/predsjednistvo', label: 'Predsjedništvo' },
+      { href: '/o-nama/statut', label: 'Statut' },
+      { href: '/o-nama/eticki-kodeks', label: 'Etički kodeks' },
+      { href: '/financiranje', label: 'Financiranje' },
+    ],
+  },
+  {
+    title: 'Aktivnosti',
+    links: [
+      { href: '/policy', label: 'Politike' },
+      { href: '/vijesti', label: 'Vijesti' },
+      { href: '/peticije', label: 'Peticije' },
+      { href: '/inicijative', label: 'Inicijative' },
+      { href: '/transparentnost', label: 'Transparentnost' },
+    ],
+  },
+  {
+    title: 'Pridruži se',
+    links: [
+      { href: '/pridruzi-se', label: 'Postani član' },
+      { href: '/volontiraj', label: 'Volontiraj' },
+      { href: '/doniraj', label: 'Doniraj' },
+      { href: '/lokalno', label: 'Lokalna grupa' },
+    ],
+  },
+  {
+    title: 'Kontakt',
+    links: [
+      { href: '/kontakt', label: 'Kontakt' },
+      { href: '/press-kit', label: 'Press kit' },
+      { href: '/karijere', label: 'Karijere' },
+      { href: 'mailto:info@most-hrvatska.hr', label: 'info@most-hrvatska.hr' },
+    ],
+  },
+];
+
+const social = [
+  { href: 'https://x.com/MostHrvatska', label: 'X' },
+  { href: 'https://facebook.com/MostHrvatska', label: 'Facebook' },
+  { href: 'https://instagram.com/MostHrvatska', label: 'Instagram' },
+  { href: 'https://youtube.com/@MostHrvatska', label: 'YouTube' },
+  { href: 'https://tiktok.com/@MostHrvatska', label: 'TikTok' },
+];
+---
+
+<footer class="bg-most-900 text-white mt-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-8">
+      <!-- Brand -->
+      <div class="col-span-2 md:col-span-1">
+        <a href="/" class="inline-block mb-4">
+          <span class="bg-white text-most-900 px-2.5 py-1 rounded text-xl font-black tracking-tight">MOST</span>
+        </a>
+        <p class="text-sm text-most-200 leading-relaxed">
+          Stranka za transparentnost, odgovornost i poštene institucije u Hrvatskoj.
+        </p>
+        <div class="flex gap-3 mt-4">
+          {social.map((s) => (
+            <a href={s.href} class="text-most-300 hover:text-white transition" target="_blank" rel="noopener noreferrer" aria-label={s.label}>
+              <span class="text-sm font-semibold">{s.label[0]}</span>
+            </a>
+          ))}
+        </div>
+      </div>
+
+      {sections.map((section) => (
+        <div>
+          <h4 class="text-xs uppercase tracking-widest text-most-300 font-bold mb-4">{section.title}</h4>
+          <ul class="space-y-2">
+            {section.links.map((link) => (
+              <li>
+                <a href={link.href} class="text-sm text-most-100 hover:text-white transition">
+                  {link.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-most-800 flex flex-col md:flex-row justify-between gap-4 text-sm text-most-300">
+      <p>© {new Date().getFullYear()} MOST — Most nezavisnih lista. OIB: 92067514054.</p>
+      <div class="flex gap-6">
+        <a href="/privatnost" class="hover:text-white transition">Privatnost</a>
+        <a href="/kolacici" class="hover:text-white transition">Kolačići</a>
+        <a href="/uvjeti" class="hover:text-white transition">Uvjeti</a>
+      </div>
+    </div>
+  </div>
+</footer>
