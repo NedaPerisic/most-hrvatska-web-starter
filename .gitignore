@@ -8,10 +8,3 @@ dist/
 .vercel/
 .claude/
 *.log
-
-# Licencirani fontovi — NE u javni repo (Avenir = komercijalni Linotype, Binoma = Trial).
-# Postavi datoteke lokalno u public/fonts/ prije build-a (vidi public/fonts/README.md).
-public/fonts/*.otf
-public/fonts/*.ttf
-public/fonts/*.woff
-public/fonts/*.woff2

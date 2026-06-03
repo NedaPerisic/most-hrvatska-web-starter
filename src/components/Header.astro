@@ -28,7 +28,19 @@ const navLinks = [
       </nav>
 
       <!-- CTAs -->
-      <div class="flex items-center gap-2">
+      <div class="flex items-center gap-2 md:gap-3">
+        <!-- ECR Party — član europske političke obitelji; klik otvara Reykjavik deklaraciju -->
+        <a
+          href="/ecr-reykjavik-deklaracija.pdf"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="hidden lg:flex items-center gap-2 pr-3 mr-1 border-r border-slate-200 group"
+          title="MOST je član ECR Party — pročitaj Reykjavik deklaraciju (PDF)"
+          aria-label="ECR Party — Reykjavik deklaracija (otvara PDF u novom prozoru)"
+        >
+          <img src="/ecr-party-logo.jpg" width="34" height="34" alt="ECR Party" class="rounded-sm opacity-90 group-hover:opacity-100 transition" decoding="async" />
+          <span class="hidden xl:inline text-[11px] leading-tight text-slate-600 group-hover:text-most-700 transition">Član<br>ECR Party</span>
+        </a>
         <a href="/pridruzi-se" class="hidden sm:inline-flex btn-ghost text-sm">Pridruži se</a>
         <a href="/doniraj" class="btn-primary text-sm">Doniraj</a>
 
@@ -48,6 +60,12 @@ const navLinks = [
           {link.label}
         </a>
       ))}
+      <!-- ECR Party (mobile) -->
+      <a href="/ecr-reykjavik-deklaracija.pdf" target="_blank" rel="noopener noreferrer"
+         class="flex items-center gap-3 px-3 py-3 mt-2 border-t border-slate-100 text-sm text-slate-600">
+        <img src="/ecr-party-logo.jpg" width="32" height="32" alt="ECR Party" class="rounded-sm" decoding="async" />
+        <span>Član ECR Party — Reykjavik deklaracija (PDF)</span>
+      </a>
     </nav>
   </div>
 </header>
