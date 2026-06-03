@@ -1,12 +1,19 @@
 /* ===== FONTOVI iz Knjige vizualnih standarda MOST 2026 ===== */
 /* Primarni: Binoma Trial (Regular/Bold) — naslovi */
 /* Sekundarni: Avenir LT Std (Light/Medium) — tekst */
+
+/* NAPOMENA: trenutne Binoma datoteke su TRIAL verzije — sve znamenke (0–9)
+   su u njima zamijenjene jednim placeholder glifom (brojevi se "lome").
+   Dok se ne ubaci PUNA licencirana Binoma, znamenke (U+0030–U+0039)
+   renderiramo Avenirom preko unicode-range; slova i interpunkcija ostaju Binoma.
+   → Kad stignu pune .ttf datoteke: zamijeni fajlove i ukloni .num-* override faces. */
 @font-face {
   font-family: 'Binoma Trial';
   src: url('/fonts/BinomaTrialRegular-R9Kvv.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0-2F, U+3A-10FFFF; /* sve OSIM znamenki 0–9 */
 }
 @font-face {
   font-family: 'Binoma Trial';
@@ -14,6 +21,24 @@
   font-weight: 700;
   font-style: normal;
   font-display: swap;
+  unicode-range: U+0-2F, U+3A-10FFFF; /* sve OSIM znamenki 0–9 */
+}
+/* Znamenke unutar Binoma naslova → Avenir (Trial Binoma nema ispravne brojke) */
+@font-face {
+  font-family: 'Binoma Trial';
+  src: url('/fonts/AvenirLTStd-Light.otf') format('opentype');
+  font-weight: 100 450;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
+}
+@font-face {
+  font-family: 'Binoma Trial';
+  src: url('/fonts/AvenirLTStd-Medium.otf') format('opentype');
+  font-weight: 451 900;
+  font-style: normal;
+  font-display: swap;
+  unicode-range: U+0030-0039;
 }
 @font-face {
   font-family: 'Avenir LT Std';
