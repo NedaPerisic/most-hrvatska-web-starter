@@ -1,0 +1,25 @@
+---
+// MOST logo — SLUŽBENI vektor iz brand paketa (Final Logotip_stranka_Most_).
+// Color verzija: navy #152c4c, svijetloplava #53c8ed, akcent #d64127.
+// White verzija: za tamne pozadine.
+// Izvorne datoteke: /public/most-logo-color.svg, /public/most-logo-white.svg
+interface Props {
+  variant?: 'color' | 'white';
+  width?: number;
+  class?: string;
+}
+const { variant = 'color', width = 120, class: className = '' } = Astro.props;
+const src = variant === 'white' ? '/most-logo-white.svg' : '/most-logo-color.svg';
+// Logo aspect ratio iz službenog viewBoxa: 900.15 × 323.61
+const height = Math.round((width * 323.61) / 900.15);
+---
+
+<img
+  src={src}
+  width={width}
+  height={height}
+  alt="MOST"
+  class={className}
+  style={`display:block; width:${width}px; height:auto;`}
+  decoding="async"
+/>

@@ -120,11 +120,22 @@ const url = `https://most-hrvatska.hr/vijesti/${slug}`;
     <!-- Body -->
     <div class="bg-white pb-16">
       <div class="container-prose prose prose-slate prose-lg max-w-none">
-        {post.body.map((para, i) => (
-          <p class={i === 0 ? 'first-letter:text-5xl first-letter:font-bold first-letter:text-most-700 first-letter:mr-2 first-letter:float-left first-letter:leading-none' : ''}>
-            {para}
-          </p>
-        ))}
+        {post.body.map((para, i) => {
+          // Citati zastupnika (paragraf koji počinje navodnikom) → pale pull-quote (civic/editorial, Nova P0)
+          const isQuote = para.trim().startsWith('"') || para.trim().startsWith('„');
+          if (isQuote) {
+            return (
+              <blockquote class="not-prose bg-pale border-l-4 border-most-500 rounded-r-lg px-6 py-5 my-8 font-display text-most-700 text-xl leading-snug">
+                {para}
+              </blockquote>
+            );
+          }
+          return (
+            <p class={i === 0 ? 'first-letter:text-5xl first-letter:font-bold first-letter:text-most-700 first-letter:mr-2 first-letter:float-left first-letter:leading-none' : ''}>
+              {para}
+            </p>
+          );
+        })}
       </div>
     </div>
 
@@ -135,7 +146,7 @@ const url = `https://most-hrvatska.hr/vijesti/${slug}`;
         <div class="grid md:grid-cols-2 gap-6">
           {post.relatedPosts.map((rel) => (
             <a href={`/vijesti/${rel.slug}`} class="card group">
-              <p class="text-xs text-slate-500 mb-2">Povezano</p>
+              <p class="text-xs text-slate-600 mb-2">Povezano</p>
               <h3 class="text-h3 group-hover:text-most-700 transition">{rel.title}</h3>
             </a>
           ))}

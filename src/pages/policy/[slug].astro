@@ -97,9 +97,9 @@ const url = `https://most-hrvatska.hr/policy/${slug}`;
           <p class="text-lead text-most-100">{policy.position}</p>
         </div>
         <div class="bg-most-800 rounded-2xl p-8 text-center">
-          <div class="text-7xl font-black text-accent-500 mb-2">{policy.heroStat.num}</div>
-          <div class="text-most-100 font-semibold">{policy.heroStat.label}</div>
-          <div class="text-sm text-most-300 mt-2">{policy.heroStat.sub}</div>
+          <div class="font-display font-bold text-7xl text-accent-500 mb-2">{policy.heroStat.num}</div>
+          <div class="text-most-100 font-medium">{policy.heroStat.label}</div>
+          <div class="text-sm text-most-200 mt-2">{policy.heroStat.sub}</div>
         </div>
       </div>
     </div>
@@ -124,8 +124,8 @@ const url = `https://most-hrvatska.hr/policy/${slug}`;
     </div>
   </section>
 
-  <!-- INITIATIVES -->
-  <section class="py-16 bg-slate-50">
+  <!-- INITIATIVES — pale plava (okružena bijelom, daleko od crvene CTA) -->
+  <section class="py-16 bg-pale">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <h2 class="text-h1 mb-8 text-center">Naše inicijative</h2>
       <div class="grid md:grid-cols-3 gap-6">
@@ -148,7 +148,7 @@ const url = `https://most-hrvatska.hr/policy/${slug}`;
         {policy.responsibleMembers.map((m) => (
           <a href={`/clanovi/${m.slug}`} class="card text-center w-48">
             <div class="aspect-square rounded-full bg-most-100 mx-auto w-20 mb-3"></div>
-            <p class="font-bold text-slate-900">{m.name}</p>
+            <p class="font-display font-bold text-most-700">{m.name}</p>
           </a>
         ))}
       </div>

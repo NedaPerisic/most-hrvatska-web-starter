@@ -31,7 +31,7 @@ const categories = ['Sve', 'Antikorupcija', 'Pravosuđe', 'Poljoprivreda', 'Zdra
   <section class="bg-slate-50 border-b border-slate-200 py-4 sticky top-16 md:top-20 z-30">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex gap-2 overflow-x-auto">
       {categories.map((cat, i) => (
-        <button class={`px-4 py-2 rounded-full text-sm font-semibold whitespace-nowrap ${i === 0 ? 'bg-most-700 text-white' : 'bg-white border border-slate-200 text-slate-700 hover:border-most-300'}`}>
+        <button class={`px-4 py-2 rounded-full text-sm font-medium whitespace-nowrap transition ${i === 0 ? 'bg-most-700 text-white' : 'bg-white border border-slate-200 text-most-700 hover:bg-pale hover:border-pale'}`}>
           {cat}
         </button>
       ))}
@@ -47,14 +47,14 @@ const categories = ['Sve', 'Antikorupcija', 'Pravosuđe', 'Poljoprivreda', 'Zdra
             <a href={`/vijesti/${post.slug}`} class="block aspect-video bg-gradient-to-br from-most-100 to-most-200"></a>
             <div class="p-6 flex-1 flex flex-col">
               <div class="flex items-center gap-2 mb-3 text-xs">
-                <span class="badge-most">{post.category}</span>
-                <time class="text-slate-500">{post.date}</time>
+                <span class="badge-sky">{post.category}</span>
+                <time class="text-slate-600">{post.date}</time>
               </div>
               <h2 class="text-h3 mb-2 group-hover:text-most-700 transition">
                 <a href={`/vijesti/${post.slug}`}>{post.title}</a>
               </h2>
               <p class="text-sm text-slate-600 flex-1 mb-4">{post.excerpt}</p>
-              <p class="text-xs text-slate-500">Autor: <span class="font-semibold">{post.author}</span></p>
+              <p class="text-xs text-slate-600">Autor: <span class="font-medium text-most-700">{post.author}</span></p>
             </div>
           </article>
         ))}

@@ -1,4 +1,5 @@
 ---
+import Logo from '@/components/Logo.astro';
 const navLinks = [
   { href: '/o-nama', label: 'O nama' },
   { href: '/clanovi', label: 'Zastupnici' },
@@ -13,15 +14,14 @@ const navLinks = [
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-16 md:h-20">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 font-display font-black text-most-700 hover:text-most-800 transition" aria-label="MOST Hrvatska — naslovnica">
-        <span class="bg-most-700 text-white px-2.5 py-1 rounded text-xl tracking-tight">MOST</span>
-        <span class="hidden sm:inline text-sm font-semibold uppercase tracking-widest text-slate-700">Hrvatska</span>
+      <a href="/" class="flex items-center transition hover:opacity-80" aria-label="MOST — naslovnica">
+        <Logo variant="color" width={104} />
       </a>
 
       <!-- Desktop nav -->
       <nav class="hidden md:flex items-center gap-1" aria-label="Glavna navigacija">
         {navLinks.map((link) => (
-          <a href={link.href} class="px-3 py-2 text-sm font-semibold text-slate-700 hover:text-most-700 hover:bg-most-50 rounded-md transition">
+          <a href={link.href} class="px-3 py-2 text-sm font-medium text-most-700 hover:text-accent-500 hover:bg-most-50 rounded-md transition">
             {link.label}
           </a>
         ))}
@@ -33,7 +33,7 @@ const navLinks = [
         <a href="/doniraj" class="btn-primary text-sm">Doniraj</a>
 
         <!-- Mobile menu button -->
-        <button type="button" class="md:hidden p-2 text-slate-700" aria-label="Otvori meni" data-mobile-menu-trigger>
+        <button type="button" class="md:hidden p-2 text-most-700" aria-label="Otvori meni" data-mobile-menu-trigger>
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
         </button>
       </div>
@@ -44,7 +44,7 @@ const navLinks = [
   <div class="md:hidden border-t border-slate-200 bg-white hidden" data-mobile-menu>
     <nav class="px-4 py-4 space-y-1" aria-label="Mobilna navigacija">
       {navLinks.map((link) => (
-        <a href={link.href} class="block px-3 py-3 text-base font-semibold text-slate-700 hover:bg-most-50 rounded-md">
+        <a href={link.href} class="block px-3 py-3 text-base font-medium text-most-700 hover:bg-most-50 rounded-md">
           {link.label}
         </a>
       ))}

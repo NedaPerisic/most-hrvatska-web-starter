@@ -109,9 +109,9 @@ const featuredMembers = [
         <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {deliveries.map((item) => (
             <div class="card text-center">
-              <div class="text-5xl font-black text-accent-500 mb-2">{item.num}</div>
-              <div class="text-sm font-semibold text-slate-900">{item.label}</div>
-              <div class="text-xs text-slate-500 mt-1">{item.sub}</div>
+              <div class="font-display font-bold text-5xl text-accent-500 mb-2">{item.num}</div>
+              <div class="text-sm font-medium text-most-700">{item.label}</div>
+              <div class="text-xs text-slate-600 mt-1">{item.sub}</div>
             </div>
           ))}
         </div>
@@ -119,8 +119,8 @@ const featuredMembers = [
     </div>
   </section>
 
-  <!-- RECENT NEWS -->
-  <section class="py-16 md:py-24 bg-slate-50">
+  <!-- RECENT NEWS — pale plava (civic "informiranje" zona, okružena bijelom) -->
+  <section class="py-16 md:py-24 bg-pale">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex items-end justify-between mb-12">
         <div>
@@ -183,10 +183,10 @@ const featuredMembers = [
     </div>
   </section>
 
-  <!-- NEWSLETTER -->
-  <section class="py-16 bg-most-50">
+  <!-- NEWSLETTER — bijela (crvena CTA traka iznad → bijela = čist prijelaz) -->
+  <section class="py-16 bg-white border-t border-slate-100">
     <div class="container-prose text-center">
-      <h2 class="text-h2 mb-2">Bitne vijesti, jednom tjedno.</h2>
+      <h2 class="text-h2 mb-2 text-most-700">Bitne vijesti, jednom tjedno.</h2>
       <p class="text-slate-600 mb-6">Bez spama. Sažetak najvažnijeg iz Sabora i lokalne politike.</p>
       <form class="flex flex-col sm:flex-row gap-2 max-w-md mx-auto">
         <label for="newsletter-email" class="sr-only">E-mail adresa</label>
@@ -194,7 +194,7 @@ const featuredMembers = [
           class="flex-1 px-4 py-3 rounded-lg border border-slate-300 focus:border-most-500 focus:outline-none" />
         <button type="submit" class="btn-primary">Pretplati se</button>
       </form>
-      <p class="text-xs text-slate-500 mt-3">GDPR-compliant. Možeš se odjaviti u jednom kliku.</p>
+      <p class="text-xs text-slate-600 mt-3">Usklađeno s GDPR-om. Možeš se odjaviti u jednom kliku.</p>
     </div>
   </section>
 </BaseLayout>
