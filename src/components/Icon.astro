@@ -1,0 +1,46 @@
+---
+// MOST icon — Lucide (MIT) ikone u brand bojama, zamjena za emotikone.
+// Boje iz Knjige standarda: navy #162C4C, sky #51C8EE, accent #D64127.
+import { ICONS } from '@/lib/icons';
+
+interface Props {
+  name: keyof typeof ICONS | string;
+  size?: number;
+  color?: 'navy' | 'sky' | 'accent' | 'white' | 'current';
+  stroke?: number;
+  class?: string;
+  title?: string;
+}
+const { name, size = 24, color = 'navy', stroke = 2, class: className = '', title } = Astro.props;
+
+const COLORS: Record<string, string> = {
+  navy: '#162C4C',
+  sky: '#51C8EE',
+  accent: '#D64127',
+  white: '#FFFFFF',
+  current: 'currentColor',
+};
+const hex = COLORS[color] ?? COLORS.navy;
+const inner = ICONS[name as string] ?? '';
+---
+
+{inner ? (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width={size}
+    height={size}
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke={hex}
+    stroke-width={stroke}
+    stroke-linecap="round"
+    stroke-linejoin="round"
+    class={className}
+    role={title ? 'img' : 'presentation'}
+    aria-label={title}
+    aria-hidden={title ? undefined : 'true'}
+    set:html={(title ? `<title>${title}</title>` : '') + inner}
+  />
+) : (
+  <span class="text-xs text-accent-600">?{name}</span>
+)}
