@@ -1,0 +1,136 @@
+---
+// Paleta ikona MOST — interna referenca za developere/dizajnere.
+// Živa stranica: čita src/lib/icons.ts i renderira pravom Icon komponentom.
+// Live: /ikone  ·  Izvor u repozitoriju.
+import '@/styles/global.css';
+import Icon from '@/components/Icon.astro';
+import { ICONS, ICON_LABELS } from '@/lib/icons';
+
+const names = Object.keys(ICONS);
+
+const policy = ['antikorupcija','transparentnost','lokalna-samouprava','pravosude','demografija','gospodarstvo','eu-fondovi','energetika','zdravstvo','obrazovanje','sigurnost','digitalna-prava','poljoprivreda'];
+const akcije = ['doniraj','pridruzi-se','volontiraj','vijesti','priopcenje','kontakt','lokalno','pretraga','glasanje'];
+const vrijednosti = ['povjerenje','cilj','dokument','okolis','financije','sabor'];
+
+const groups = [
+  { title: 'Politike (12 stupova)', keys: policy },
+  { title: 'Akcije i navigacija', keys: akcije },
+  { title: 'Vrijednosti i institucije', keys: vrijednosti },
+];
+
+const emojiMap = [
+  { emoji: '⚖️', icon: 'antikorupcija / pravosude', use: 'Antikorupcija, pravosuđe' },
+  { emoji: '🏛️', icon: 'lokalna-samouprava / sabor', use: 'JLS, institucije' },
+  { emoji: '💼', icon: 'gospodarstvo', use: 'Poduzetništvo' },
+  { emoji: '🗳️', icon: 'glasanje', use: 'Izbori, glasanje' },
+  { emoji: '📚', icon: 'obrazovanje / dokument', use: 'Obrazovanje, materijali' },
+  { emoji: '🤝', icon: 'povjerenje / volontiraj', use: 'Zajedništvo, volontiranje' },
+  { emoji: '🎯', icon: 'cilj', use: 'Inicijative, ciljevi' },
+  { emoji: '🛡️', icon: 'sigurnost / antikorupcija', use: 'Sigurnost, povjerenje' },
+  { emoji: '📰', icon: 'vijesti / priopcenje', use: 'Vijesti, priopćenja' },
+];
+---
+
+<!DOCTYPE html>
+<html lang="hr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Paleta ikona — MOST</title>
+  <meta name="robots" content="noindex" />
+</head>
+<body class="bg-slate-50">
+  <header class="bg-most-700 text-white px-6 py-12">
+    <div class="max-w-5xl mx-auto">
+      <p class="text-xs uppercase tracking-[0.16em] text-sky-500 font-medium">Vizualni sustav · zamjena za emotikone</p>
+      <h1 class="font-display font-bold text-4xl mt-2 mb-3">Paleta ikona MOST</h1>
+      <p class="text-most-100 max-w-2xl">{names.length} ikona u brand bojama (Lucide / MIT). Konzistentan line stil, 24px grid. Koriste se umjesto emotikona za profesionalan, institucionalan dojam.</p>
+    </div>
+  </header>
+
+  <main class="max-w-5xl mx-auto px-6 py-12 space-y-14">
+
+    <!-- Boje -->
+    <section>
+      <h2 class="font-display font-bold text-2xl mb-2">Boje ikona</h2>
+      <p class="text-slate-600 mb-6 text-sm max-w-2xl">Zadana je <strong>navy (#162C4C)</strong>. Sky i accent koriste se rijetko, za naglasak. Bijela na tamnim/pale pozadinama.</p>
+      <div class="flex flex-wrap gap-5">
+        <div class="text-center text-xs text-slate-600"><div class="w-24 h-24 bg-white border border-slate-200 rounded-xl flex items-center justify-center mb-2"><Icon name="povjerenje" color="navy" size={40} stroke={1.8} /></div>navy · #162C4C</div>
+        <div class="text-center text-xs text-slate-600"><div class="w-24 h-24 bg-white border border-slate-200 rounded-xl flex items-center justify-center mb-2"><Icon name="povjerenje" color="sky" size={40} stroke={1.8} /></div>sky · #51C8EE</div>
+        <div class="text-center text-xs text-slate-600"><div class="w-24 h-24 bg-white border border-slate-200 rounded-xl flex items-center justify-center mb-2"><Icon name="povjerenje" color="accent" size={40} stroke={1.8} /></div>accent · #D64127</div>
+        <div class="text-center text-xs text-slate-600"><div class="w-24 h-24 bg-most-700 rounded-xl flex items-center justify-center mb-2"><Icon name="povjerenje" color="white" size={40} stroke={1.8} /></div>white na navy</div>
+      </div>
+    </section>
+
+    <!-- Setovi po grupama -->
+    {groups.map((g) => (
+      <section>
+        <h2 class="font-display font-bold text-2xl mb-6">{g.title}</h2>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {g.keys.map((key) => (
+            <figure class="bg-white border border-slate-200 rounded-xl p-5 text-center hover:shadow-lg hover:border-sky-500 transition">
+              <div class="h-12 flex items-center justify-center mb-3">
+                <Icon name={key} color="navy" size={36} stroke={1.8} />
+              </div>
+              <figcaption class="flex flex-col gap-1">
+                <span class="font-mono text-[11px] text-accent-600">{key}</span>
+                <span class="text-xs text-slate-600 leading-snug">{ICON_LABELS[key]}</span>
+              </figcaption>
+            </figure>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <!-- Primjer u upotrebi -->
+    <section>
+      <h2 class="font-display font-bold text-2xl mb-2">Primjer u upotrebi — policy kartice</h2>
+      <p class="text-slate-600 mb-6 text-sm">Ikona u pale plavom krugu (#D2EDF4) + navy. Tako se zamjenjuje emoji u policy stupovima.</p>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {[['antikorupcija','Antikorupcija','Sustavna borba protiv korupcije.'],['lokalna-samouprava','Transparentnost JLS','Otvoreni proračuni općina.'],['pravosude','Neovisno pravosuđe','Reforma sudstva.'],['gospodarstvo','Poduzetništvo','Manje birokracije za MSP.']].map(([k,t,d]) => (
+          <div class="bg-white border border-slate-200 rounded-xl p-6">
+            <div class="w-13 h-13 w-[52px] h-[52px] rounded-xl bg-pale flex items-center justify-center mb-3.5">
+              <Icon name={k} color="navy" size={26} stroke={1.9} />
+            </div>
+            <h4 class="font-display font-bold text-lg mb-1">{t}</h4>
+            <p class="text-sm text-slate-600">{d}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+
+    <!-- Emoji mapiranje -->
+    <section>
+      <h2 class="font-display font-bold text-2xl mb-4">Emoji → ikona (mapiranje)</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full bg-white rounded-lg overflow-hidden text-sm shadow-sm">
+          <thead><tr class="bg-pale text-most-700 text-xs uppercase tracking-wide">
+            <th class="text-left px-4 py-3">Bilo</th><th class="text-left px-4 py-3">Sada (ime ikone)</th><th class="text-left px-4 py-3">Upotreba</th>
+          </tr></thead>
+          <tbody>
+            {emojiMap.map((r) => (
+              <tr class="border-b border-slate-100">
+                <td class="px-4 py-3 text-xl">{r.emoji}</td>
+                <td class="px-4 py-3 font-mono text-xs text-accent-600">{r.icon}</td>
+                <td class="px-4 py-3 text-slate-600">{r.use}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- Upute -->
+    <section>
+      <h2 class="font-display font-bold text-2xl mb-4">Kako koristiti (Astro)</h2>
+      <div class="bg-pale border-l-4 border-sky-500 rounded-r-lg p-5 text-sm text-most-700">
+        <p class="mb-2"><code class="font-mono bg-white px-2 py-0.5 rounded text-accent-600">&lt;Icon name="antikorupcija" color="navy" size=&#123;28&#125; /&gt;</code></p>
+        <p class="mb-1">Boje: <code class="font-mono">navy</code> (zadano) · <code class="font-mono">sky</code> · <code class="font-mono">accent</code> · <code class="font-mono">white</code></p>
+        <p>Datoteke: <code class="font-mono">src/components/Icon.astro</code> + <code class="font-mono">src/lib/icons.ts</code>. Dodavanje nove ikone: kopiraj inner SVG iz Lucide u <code class="font-mono">icons.ts</code> pod novim ključem.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="text-center text-xs text-slate-500 py-10">MOST · Paleta ikona · Lucide (MIT) u brand bojama</footer>
+</body>
+</html>
