@@ -1,0 +1,48 @@
+---
+/**
+ * PersonSchema.astro — JSON-LD entitet za zastupnika/člana (schema.org Person).
+ *
+ * Povezuje osobu na stranku (memberOf → #organizacija) i na vanjske
+ * izvore (sameAs). Stabilni @id se gradi iz slug-a i NE smije se mijenjati.
+ *
+ * Upotreba u src/pages/clanovi/[slug].astro (podaci iz Sanityja):
+ *   <PersonSchema
+ *     name={entry.name}
+ *     slug={entry.slug}
+ *     jobTitle={entry.role}
+ *     image={entry.photoUrl}
+ *     description={entry.bioShort}
+ *     sameAs={entry.sameAs}
+ *   />
+ *
+ * NAPOMENA: SITE = konačna kanonska domena (most.hr). @id mora biti trajan,
+ * zato koristi pravu domenu, ne preview URL.
+ */
+const SITE = 'https://most.hr';
+const ORG_ID = `${SITE}/#organizacija`;
+
+interface Props {
+  name: string;
+  slug: string;            // npr. "nikola-grmoja"
+  jobTitle?: string;
+  image?: string;
+  description?: string;
+  sameAs?: string[];       // Wikipedia, Wikidata, Sabor.hr, službeni profili
+}
+
+const { name, slug, jobTitle, image, description, sameAs = [] } = Astro.props;
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  '@id': `${SITE}/clanovi/${slug}#person`,
+  name,
+  url: `${SITE}/clanovi/${slug}`,
+  ...(jobTitle ? { jobTitle } : {}),
+  ...(image ? { image } : {}),
+  ...(description ? { description } : {}),
+  memberOf: { '@id': ORG_ID },
+  ...(sameAs.length ? { sameAs } : {}),
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />

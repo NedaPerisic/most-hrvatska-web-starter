@@ -1,0 +1,28 @@
+---
+/**
+ * PartySchema.astro — JSON-LD entitet stranke (schema.org PoliticalParty).
+ *
+ * Ovo je "sidro" cijelog grafa — fiksni @id (#organizacija) na koji se
+ * svi zastupnici i sadržaji povezuju (memberOf / author / publisher).
+ * Emitira se JEDNOM, npr. u BaseLayout-u ili na naslovnici.
+ *
+ * sameAs linkove (Wikipedia, Wikidata, službeni profili) priprema PR tim.
+ */
+const SITE = 'https://most.hr';
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'PoliticalParty',
+  '@id': `${SITE}/#organizacija`,
+  name: 'MOST',
+  url: SITE,
+  logo: `${SITE}/most-logo-color.svg`,
+  sameAs: [
+    'https://hr.wikipedia.org/wiki/Most_(stranka)',
+    // 'https://www.wikidata.org/wiki/Q######',  // ← PR doda Q-ID
+    'https://www.facebook.com/MostHrvatska',
+    'https://www.instagram.com/most.hr',
+  ],
+};
+---
+<script type="application/ld+json" set:html={JSON.stringify(schema)} />
