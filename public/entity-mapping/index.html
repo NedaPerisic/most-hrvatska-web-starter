@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="hr"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MOST — Entity Mapping & GEO (kako nas AI citira)</title>
+<style>
+/* Binoma Trial: sve OSIM znamenki (trial verzija ima puknute brojke 0–9) */
+@font-face{font-family:'Binoma Trial';src:url('/fonts/BinomaTrialBold-1jPDj.ttf') format('truetype');font-weight:700;font-display:swap;unicode-range:U+0-2F,U+3A-10FFFF}
+@font-face{font-family:'Binoma Trial';src:url('/fonts/BinomaTrialRegular-R9Kvv.ttf') format('truetype');font-weight:400;font-display:swap;unicode-range:U+0-2F,U+3A-10FFFF}
+@font-face{font-family:'Binoma Trial';src:url('/fonts/AvenirLTStd-Light.otf') format('opentype');font-weight:100 450;font-display:swap;unicode-range:U+0030-0039}
+@font-face{font-family:'Binoma Trial';src:url('/fonts/AvenirLTStd-Medium.otf') format('opentype');font-weight:451 900;font-display:swap;unicode-range:U+0030-0039}
+@font-face{font-family:'Avenir LT Std';src:url('/fonts/AvenirLTStd-Medium.otf') format('opentype');font-weight:500;font-display:swap}
+@font-face{font-family:'Avenir LT Std';src:url('/fonts/AvenirLTStd-Light.otf') format('opentype');font-weight:300;font-display:swap}
+:root{--navy:#162C4C;--sky:#51C8EE;--accent:#D64127;--blue:#284E87;--pale:#D2EDF4}
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Avenir LT Std',sans-serif;font-weight:500;color:var(--navy);background:#fafafa;line-height:1.6;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:'Binoma Trial',sans-serif;line-height:1.2}
+.wrap{max-width:980px;margin:0 auto;padding:0 32px}
+header{background:var(--navy);color:#fff;padding:56px 0 48px}
+.eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--sky);font-weight:500;margin-bottom:12px}
+header h1{font-size:40px;margin-bottom:14px}
+header p{color:#cfe0ee;max-width:710px;font-size:17px}
+section{padding:44px 0;border-bottom:1px solid #e8edf3}
+section h2{font-size:26px;margin-bottom:8px}
+section .sub{color:#5a6b7e;margin-bottom:26px;max-width:740px}
+.lead{font-size:18px;color:#33485f}
+em{font-style:normal;background:linear-gradient(transparent 60%,#d2edf4 60%);padding:0 2px}
+code{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:.86em;background:#eef2f7;padding:1px 6px;border-radius:4px;color:var(--accent)}
+
+/* tri ere — table */
+.era{width:100%;border-collapse:separate;border-spacing:0;background:#fff;border:1px solid #e2e8f0;border-radius:14px;overflow:hidden;font-size:14px}
+.era th,.era td{padding:13px 16px;text-align:left;border-bottom:1px solid #eef2f7;vertical-align:top}
+.era thead th{background:#f4f7fa;font-family:'Binoma Trial';font-weight:700;font-size:13px}
+.era thead th:last-child{background:var(--navy);color:#fff}
+.era tbody td:last-child{background:#f3fbfe;font-weight:500;color:var(--navy)}
+.era tbody th{font-weight:500;color:#5a6b7e;font-family:'Avenir LT Std'}
+.era tr:last-child td,.era tr:last-child th{border-bottom:none}
+.tagline{font-family:'Binoma Trial';font-weight:700;font-size:17px;color:var(--navy);margin-top:18px;text-align:center}
+
+/* stat */
+.statgrid{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center;background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:28px 30px}
+@media(max-width:600px){.statgrid{grid-template-columns:1fr;gap:10px}}
+.bignum{font-family:'Binoma Trial';font-weight:700;font-size:72px;color:var(--accent);line-height:1}
+.statgrid p{font-size:15px;color:#33485f}
+.statgrid b{font-family:'Binoma Trial';font-weight:700}
+
+/* floor callout */
+.floor{background:var(--navy);color:#dfeaf3;border-radius:16px;padding:26px 30px;margin-top:8px}
+.floor h3{color:#fff;font-size:19px;margin-bottom:8px}
+.floor .q{font-style:italic;color:#bcd4e6;border-left:3px solid var(--sky);padding-left:14px;margin-top:14px;font-size:14px}
+
+/* pojmovnik */
+.gloss{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:14px}
+.gloss div{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:16px 18px}
+.gloss dt{font-family:'Binoma Trial';font-weight:700;font-size:15px;margin-bottom:4px;color:var(--navy)}
+.gloss dd{font-size:13.5px;color:#5a6b7e}
+
+/* entity page + tag */
+.split{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:stretch}
+@media(max-width:760px){.split{grid-template-columns:1fr}}
+.panel-label{font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.panel-label .tagdot{width:9px;height:9px;border-radius:50%}
+.browser{border-radius:14px;border:1px solid #dbe3ec;overflow:hidden;background:#fff;height:100%}
+.bbar{background:#eef2f7;padding:9px 12px;display:flex;align-items:center;gap:8px}
+.bbar .dots{display:flex;gap:5px}
+.bbar .dots i{width:10px;height:10px;border-radius:50%;display:block}
+.url{background:#fff;border:1px solid #e2e8f0;border-radius:6px;padding:4px 10px;font-size:11.5px;color:#5a6b7e;font-family:'JetBrains Mono',monospace;flex:1}
+.bbody{padding:20px}
+.avatar{width:64px;height:64px;border-radius:50%;background:#dbe7f1;margin-bottom:12px}
+.bbody h4{font-size:18px;margin-bottom:3px}
+.bbody .role{font-size:13px;color:var(--accent);margin-bottom:12px}
+.bbody p{font-size:13px;color:#5a6b7e}
+.codewin{background:var(--navy);border-radius:14px;overflow:hidden;height:100%;border:1px solid var(--navy)}
+.cbar{background:#0f1f37;padding:9px 12px;font-size:11px;color:#7e93a8;font-family:'JetBrains Mono',monospace}
+.code{padding:16px 18px;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12px;line-height:1.65;color:#dce8f2;overflow:auto}
+.code .tag{color:var(--sky)}.code .k{color:#9fd4ff}.code .s{color:#9fe2b0}
+.hl{background:rgba(81,200,238,.14);display:block;border-radius:4px;margin:0 -6px;padding:0 6px}
+.tagnote{text-align:center;font-size:13.5px;color:#33485f;margin-top:16px}
+.tagnote b{font-family:'Binoma Trial';font-weight:700}
+
+/* flow */
+.flow{display:flex;gap:0;flex-wrap:wrap}
+.step{flex:1;min-width:150px;background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:18px 16px;text-align:center}
+.step .n{width:30px;height:30px;border-radius:50%;background:var(--pale);color:var(--navy);font-family:'Binoma Trial';font-weight:700;display:flex;align-items:center;justify-content:center;margin:0 auto 10px;font-size:14px}
+.step h4{font-size:15px;margin-bottom:5px}
+.step p{font-size:12.5px;color:#5a6b7e;line-height:1.45}
+.arrow{display:flex;align-items:center;justify-content:center;color:var(--sky);font-size:24px;font-weight:700;flex:0 0 28px}
+@media(max-width:760px){.flow{flex-direction:column}.arrow{transform:rotate(90deg);padding:6px 0}}
+
+/* graph */
+.graph{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:34px 28px}
+.node{display:inline-block;border-radius:10px;padding:10px 16px;font-weight:500;font-size:14px;border:2px solid}
+.node.org{background:var(--navy);color:#fff;border-color:var(--navy);font-family:'Binoma Trial';font-weight:700}
+.node.person{background:#fff;border-color:var(--blue);color:var(--blue)}
+.node.topic{background:var(--pale);border-color:var(--pale);color:var(--navy)}
+.node.ext{background:#fff;border-color:var(--accent);color:var(--accent);font-size:13px}
+.row{display:flex;gap:14px;flex-wrap:wrap;justify-content:center;margin:14px 0}
+.label-rel{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:#90a0b2;text-align:center;font-weight:600}
+.center-org{text-align:center;margin:6px 0}
+/* SVG knowledge graph */
+.gsvg{width:100%;height:auto;display:block}
+.gsvg .edge{stroke:#162C4C;stroke-width:2;fill:none;opacity:.5}
+.gsvg .edge.same{stroke:#D64127;stroke-width:1.8;stroke-dasharray:5 5;opacity:.75}
+.gsvg .edge.lat{stroke:#284E87;stroke-width:1.4;stroke-dasharray:2 5;opacity:.5}
+.gsvg .elabel{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;fill:#8595a6}
+.gsvg text{font-family:'Avenir LT Std',sans-serif}
+.gsvg .n-org rect{fill:#162C4C}
+.gsvg .n-org .t{fill:#fff;font-family:'Binoma Trial';font-weight:700;font-size:19px}
+.gsvg .n-org .s{fill:#9fc7e0;font-size:10px;font-family:'JetBrains Mono',monospace}
+.gsvg .n-person rect{fill:#fff;stroke:#284E87;stroke-width:2}
+.gsvg .n-person text{fill:#284E87;font-size:13.5px;font-weight:500}
+.gsvg .n-topic rect{fill:#D2EDF4;stroke:#bfe2ee;stroke-width:1}
+.gsvg .n-topic text{fill:#162C4C;font-size:13px}
+.gsvg .n-ext rect{fill:#fff;stroke:#D64127;stroke-width:1.8}
+.gsvg .n-ext text{fill:#D64127;font-size:12.5px}
+.glegend{display:flex;gap:22px;flex-wrap:wrap;justify-content:center;margin-top:14px;font-size:12.5px;color:#5a6b7e}
+.glegend span{display:flex;align-items:center;gap:7px}
+.glegend .sw{width:26px;height:0;border-top-width:2px;border-top-style:solid}
+.glegend .nd{width:13px;height:13px;border-radius:4px;border:2px solid}
+
+/* roadmap */
+.road{list-style:none;counter-reset:r;display:grid;gap:10px}
+.road li{background:#fff;border:1px solid #e2e8f0;border-radius:11px;padding:13px 16px 13px 14px;display:flex;gap:14px;align-items:flex-start}
+.road li::before{counter-increment:r;content:counter(r);flex:0 0 28px;height:28px;border-radius:50%;background:var(--pale);color:var(--navy);font-family:'Binoma Trial';font-weight:700;font-size:13px;display:flex;align-items:center;justify-content:center}
+.road .body{flex:1}
+.road b{font-family:'Binoma Trial';font-weight:700;font-size:14.5px}
+.road p{font-size:13px;color:#5a6b7e;margin-top:2px}
+.road .who{font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;padding:3px 9px;border-radius:20px;align-self:flex-start;white-space:nowrap}
+.who.dev{background:var(--pale);color:var(--navy)}
+.who.seo{background:#fde8e3;color:var(--accent)}
+.who.pr{background:#e6f7ee;color:#1d7a4d}
+.first{border:1px dashed var(--accent);background:#fff7f5;border-radius:11px;padding:13px 18px;margin:2px 0 6px;font-size:14px}
+.first b{font-family:'Binoma Trial';font-weight:700;color:var(--accent)}
+.grouphd{font-family:'Binoma Trial';font-weight:700;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:#90a0b2;margin:18px 0 8px}
+
+pre{background:var(--navy);color:#dce8f2;border-radius:12px;padding:22px;overflow:auto;font-family:'JetBrains Mono',ui-monospace,monospace;font-size:12.5px;line-height:1.6}
+pre .k{color:var(--sky)}pre .s{color:#9fe2b0}pre .c{color:#7e93a8;font-style:italic}pre .tag{color:#9fd4ff}
+.callout{background:var(--pale);border-radius:12px;padding:18px 22px;font-size:14.5px;margin-top:18px}
+.callout b{font-family:'Binoma Trial';font-weight:700}
+.pills{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+.pill{font-size:12px;background:#fff;border:1px solid #d8e0e8;border-radius:20px;padding:5px 12px;color:#33485f}
+.src{font-size:12.5px;color:#6b7c8d;line-height:1.9}
+.src a{color:var(--blue);text-decoration:none}
+footer{padding:30px 0 60px;color:#8595a6;font-size:13px}
+.why{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:16px;margin-top:8px}
+.why div{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:18px}
+.why h4{font-size:15px;margin-bottom:6px}
+.why p{font-size:13.5px;color:#5a6b7e}
+</style></head>
+<body>
+
+<header><div class="wrap">
+  <div class="eyebrow">Interni brief · SEO / GEO infrastruktura</div>
+  <h1>Entity Mapping &amp; GEO</h1>
+  <p>Kako složiti web tako da nas AI tražilice (ChatGPT, Perplexity, Google AI Overviews, Copilot) razumiju kao jasan, povezan entitet — i citiraju MOST kao izvor odgovora.</p>
+</div></header>
+
+<section><div class="wrap">
+  <h2>Što je to, u jednoj rečenici</h2>
+  <p class="lead">Umjesto da web bude „skup stranica s tekstom”, opisujemo <em>stranku, zastupnike, teme i odbore kao stvari (entitete)</em> — svaku s fiksnim identifikatorom i vezama na pouzdane izvore — pa AI motor može sa sigurnošću reći <strong>tko je MOST, tko su ljudi i za što se zalaže.</strong></p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Zašto baš sad — tri ere AI pretraživanja</h2>
+  <p class="sub">Način na koji AI bira izvore se promijenio. Optimizacija iz prošle ere više ne radi.</p>
+  <table class="era">
+    <thead><tr><th></th><th>GPT-3 era</th><th>GPT-4 era</th><th>GPT-5.4 era (sad)</th></tr></thead>
+    <tbody>
+      <tr><th>Metoda</th><td>Podudaranje uzorka</td><td>Semantička sličnost</td><td>Prolazak kroz graf</td></tr>
+      <tr><th>Jedinica</th><td>Riječ (token)</td><td>Embedding</td><td>Entitet</td></tr>
+      <tr><th>Što se traži</th><td>Gustoća ključnih riječi</td><td>Vektorska blizina</td><td>Strukturna povezanost</td></tr>
+      <tr><th>Posao sadržaja</th><td>Biti prisutan</td><td>Biti sličan</td><td>Biti dohvatljiv</td></tr>
+      <tr><th>Zašto ispada</th><td>Nije indeksiran</td><td>Niska sličnost</td><td>Odsječen od grafa</td></tr>
+    </tbody>
+  </table>
+  <p class="tagline">„Ne možeš optimizirati za GPT-5.4 logikom iz GPT-4 ere.”</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Dokaz iz prakse — Ghost Citation</h2>
+  <div class="statgrid">
+    <div class="bignum">7%</div>
+    <p><b>AI citata dolazi sa stranica koje nikad nisu bile u top-10 Google rezultata.</b> AI ih je našao <em>navigacijom kroz veze među entitetima</em>, a ne preko pozicije u tražilici. Pozicija ≠ AI citat. Navigacijski graf je novi signal — i taj postotak raste.</p>
+  </div>
+  <div class="floor">
+    <h3>TurboQuant — „pod” koji ne kontroliramo</h3>
+    <p>Google je novim algoritmom (TurboQuant) AI-ju učinio <strong>~4× jeftinijim</strong> da po jednom upitu istraži puno više izvora umjesto par. To znači da AI sad „šeta” kroz više stranica nego ikad. Ono što odlučuje hoćemo li biti među tim izvorima nije pozicija — nego <strong>dohvatljivost u grafu entiteta.</strong></p>
+    <p class="q">„TurboQuant je pod. Ne kontroliraš ga. Ono što kontroliraš je je li tvoj site mjesto kroz koje AI agent može hodati — ili slijepa ulica koju posjeti jednom i ode.” — Volpini, SEO Week 2026</p>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Pojmovnik · brza referenca</h2>
+  <p class="sub">Svi pojmovi na jednom mjestu, na ljudskom.</p>
+  <dl class="gloss">
+    <div><dt>Entitet</dt><dd>„Stvar” s identitetom: osoba, organizacija, tema. Postoji i izvan stranice — nije samo riječ u tekstu.</dd></div>
+    <div><dt>Entity page (dom entiteta)</dt><dd>Stranica koja je <em>službeni dom</em> entiteta (npr. profil zastupnika). Sve ostalo se na nju poziva.</dd></div>
+    <div><dt>JSON-LD</dt><dd>Standardni format kojim entitet opisujemo strojevima. Sjedi nevidljivo u stranici.</dd></div>
+    <div><dt>Tag <code>&lt;script type="application/ld+json"&gt;</code></dt><dd>Mjesto u HTML <code>&lt;head&gt;</code>-u gdje taj opis živi. Posjetitelj ga ne vidi, crawler ga čita.</dd></div>
+    <div><dt><code>@id</code></dt><dd>Fiksni „matični broj” entiteta (jedan URL). Isti na svakoj stranici — tako stroj zna da je riječ o istoj osobi.</dd></div>
+    <div><dt><code>@graph</code></dt><dd>Popis više entiteta povezanih u jednu mrežu (stranka ↔ zastupnik ↔ tema).</dd></div>
+    <div><dt><code>sameAs</code></dt><dd>Veze na vanjske izvore (Wikipedia, Wikidata, Sabor.hr, službeni profili) koji <em>potvrđuju</em> da je entitet stvaran.</dd></div>
+    <div><dt>Wikidata / Q-ID</dt><dd>Javna baza znanja iza Googlea i AI-ja. Q-ID je jedinstveni broj entiteta — globalno „sidro”.</dd></div>
+    <div><dt>Graph reachability</dt><dd>Dohvatljivost: koliko je tvoj entitet povezan i lako dohvatljiv kad AI „šeta” grafom. Novi ključni signal.</dd></div>
+    <div><dt>IndexNow</dt><dd>Besplatni protokol koji Bingu i partnerima javi čim nešto objaviš/promijeniš. Najjači taktički potez za svježinu.</dd></div>
+    <div><dt>Crawler</dt><dd>Program AI-ja/tražilice koji posjeti stranicu i pročita sadržaj i tagove.</dd></div>
+    <div><dt>GEO</dt><dd>Generative Engine Optimization — optimizacija da te AI <em>citira</em>, za razliku od SEO-a (da te Google rangira).</dd></div>
+  </dl>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Entity page — gdje to živi na stranici</h2>
+  <p class="sub">Da, točno — na strani to izgleda kao <strong>tag</strong>. Ista stranica ima dva lica: ono što vidi posjetitelj, i nevidljivi <code>&lt;script&gt;</code> blok koji čita AI.</p>
+  <div class="split">
+    <div>
+      <div class="panel-label"><span class="tagdot" style="background:var(--blue)"></span>Što vidi posjetitelj</div>
+      <div class="browser">
+        <div class="bbar"><div class="dots"><i style="background:#ff5f57"></i><i style="background:#febc2e"></i><i style="background:#28c840"></i></div><div class="url">most.hr/clanovi/nikola-grmoja</div></div>
+        <div class="bbody">
+          <div class="avatar"></div>
+          <h4>Nikola Grmoja</h4>
+          <div class="role">Predsjednik Kluba zastupnika</div>
+          <p>Saborski zastupnik MOST-a. Biografija, područja rada, aktivnosti u Saboru…</p>
+        </div>
+      </div>
+    </div>
+    <div>
+      <div class="panel-label"><span class="tagdot" style="background:var(--sky)"></span>Što čita AI — isti URL, nevidljivi tag</div>
+      <div class="codewin">
+        <div class="cbar">&lt;head&gt; · izvor stranice</div>
+        <div class="code">
+<span class="tag">&lt;script type="application/ld+json"&gt;</span><span class="hl">
+{
+  <span class="k">"@type"</span>: <span class="s">"Person"</span>,
+  <span class="k">"@id"</span>: <span class="s">".../nikola-grmoja#person"</span>,
+  <span class="k">"name"</span>: <span class="s">"Nikola Grmoja"</span>,
+  <span class="k">"memberOf"</span>: <span class="s">"MOST"</span>,
+  <span class="k">"sameAs"</span>: [ <span class="s">"wikipedia…"</span>, <span class="s">"sabor.hr…"</span> ]
+}</span>
+<span class="tag">&lt;/script&gt;</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p class="tagnote"><b>Bit:</b> dizajn stranice se ne mijenja — samo se u kod doda taj nevidljivi tag. Jedna stranica = jedan entitet = jedan tag.</p>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Kako to radi — tok</h2>
+  <p class="sub">Od stranice do citata u AI odgovoru.</p>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h4>Entity page</h4><p>Stranica stranke / zastupnika / teme — dom jednog entiteta.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><h4>Tag (JSON-LD)</h4><p>U <code>&lt;head&gt;</code> ide @graph: fiksni <code>@id</code> + sve veze.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><h4>sameAs</h4><p>Veze na Wikidatu, Wikipediju, Sabor.hr, službene profile.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><h4>Crawler šeta</h4><p>AI pročita tag, prati veze, potvrdi entitet izvana.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">5</div><h4>Citat</h4><p>MOST postaje pouzdan izvor u AI odgovoru.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Mreža entiteta (knowledge graph)</h2>
+  <p class="sub">Svaki entitet ima fiksni <code>@id</code> i povezan je s ostalima. Ovo je „mapa” koju gradimo kroz tagove.</p>
+  <div class="graph">
+    <svg class="gsvg" viewBox="0 0 960 600" role="img" aria-label="Graf entiteta MOST-a">
+      <!-- EDGES (prvo, da čvorovi budu iznad) -->
+      <line class="edge" x1="480" y1="300" x2="200" y2="120"/>
+      <line class="edge" x1="480" y1="300" x2="480" y2="86"/>
+      <line class="edge" x1="480" y1="300" x2="760" y2="120"/>
+      <line class="edge" x1="480" y1="300" x2="200" y2="480"/>
+      <line class="edge" x1="480" y1="300" x2="480" y2="514"/>
+      <line class="edge" x1="480" y1="300" x2="760" y2="480"/>
+      <line class="edge same" x1="480" y1="300" x2="95" y2="300"/>
+      <line class="edge same" x1="480" y1="300" x2="865" y2="300"/>
+      <!-- lateralna veza: zastupnik → tema -->
+      <line class="edge lat" x1="200" y1="120" x2="200" y2="480"/>
+      <line class="edge lat" x1="760" y1="120" x2="760" y2="480"/>
+      <!-- edge labels -->
+      <text class="elabel" x="492" y="196">memberOf</text>
+      <text class="elabel" x="492" y="414">about</text>
+      <text class="elabel" x="675" y="291" text-anchor="middle">sameAs</text>
+      <text class="elabel" x="285" y="291" text-anchor="middle">sameAs</text>
+
+      <!-- CENTER: stranka -->
+      <g class="n-org">
+        <rect x="375" y="268" width="210" height="64" rx="13"/>
+        <text class="t" x="480" y="293" text-anchor="middle" dominant-baseline="middle">MOST</text>
+        <text class="s" x="480" y="315" text-anchor="middle" dominant-baseline="middle">PoliticalParty · @id /#organizacija</text>
+      </g>
+
+      <!-- PERSONS -->
+      <g class="n-person"><rect x="125" y="98" width="150" height="44" rx="10"/><text x="200" y="121" text-anchor="middle" dominant-baseline="middle">Nikola Grmoja</text></g>
+      <g class="n-person"><rect x="403" y="64" width="154" height="44" rx="10"/><text x="480" y="87" text-anchor="middle" dominant-baseline="middle">Božo Petrov</text></g>
+      <g class="n-person"><rect x="685" y="98" width="150" height="44" rx="10"/><text x="760" y="121" text-anchor="middle" dominant-baseline="middle">Marin Miletić</text></g>
+
+      <!-- TOPICS -->
+      <g class="n-topic"><rect x="118" y="460" width="164" height="40" rx="10"/><text x="200" y="481" text-anchor="middle" dominant-baseline="middle">Antikorupcija</text></g>
+      <g class="n-topic"><rect x="396" y="494" width="168" height="40" rx="10"/><text x="480" y="515" text-anchor="middle" dominant-baseline="middle">Pravosuđe</text></g>
+      <g class="n-topic"><rect x="678" y="460" width="164" height="40" rx="10"/><text x="760" y="481" text-anchor="middle" dominant-baseline="middle">Gospodarstvo</text></g>
+
+      <!-- EXTERNAL -->
+      <g class="n-ext"><rect x="22" y="280" width="146" height="40" rx="10"/><text x="95" y="301" text-anchor="middle" dominant-baseline="middle">Wikidata Q-ID</text></g>
+      <g class="n-ext"><rect x="792" y="280" width="146" height="40" rx="10"/><text x="865" y="301" text-anchor="middle" dominant-baseline="middle">Sabor.hr</text></g>
+    </svg>
+    <div class="glegend">
+      <span><i class="nd" style="border-color:#162C4C;background:#162C4C"></i> stranka</span>
+      <span><i class="nd" style="border-color:#284E87"></i> zastupnik</span>
+      <span><i class="nd" style="border-color:#bfe2ee;background:#D2EDF4"></i> tema</span>
+      <span><i class="nd" style="border-color:#D64127"></i> vanjski izvor</span>
+      <span><i class="sw" style="border-color:#162C4C"></i> memberOf / about</span>
+      <span><i class="sw" style="border-color:#D64127;border-top-style:dashed"></i> sameAs</span>
+    </div>
+  </div>
+  <div class="callout"><b>Ključ:</b> isti <code>@id</code> se kroz cijeli site uvijek <u>referencira</u>, nikad se ne redefinira. Tako sve stranice grade <em>jedan</em> povezan graf, a ne 50 odvojenih opisa.</div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Kako tag izgleda u kodu</h2>
+  <p class="sub">Srce stvari — stranka i zastupnik povezani u jedan <code>@graph</code>, sa sameAs na vanjske izvore.</p>
+<pre><span class="tag">&lt;script type="application/ld+json"&gt;</span>
+{
+  <span class="k">"@context"</span>: <span class="s">"https://schema.org"</span>,
+  <span class="k">"@graph"</span>: [
+    {
+      <span class="k">"@type"</span>: <span class="s">"PoliticalParty"</span>,
+      <span class="k">"@id"</span>: <span class="s">"https://most.hr/#organizacija"</span>,
+      <span class="k">"name"</span>: <span class="s">"MOST"</span>,
+      <span class="k">"url"</span>: <span class="s">"https://most.hr"</span>,
+      <span class="k">"sameAs"</span>: [
+        <span class="s">"https://hr.wikipedia.org/wiki/Most_(stranka)"</span>,
+        <span class="s">"https://www.wikidata.org/wiki/Q######"</span>,
+        <span class="s">"https://www.facebook.com/MostHrvatska"</span>
+      ]
+    },
+    {
+      <span class="k">"@type"</span>: <span class="s">"Person"</span>,
+      <span class="k">"@id"</span>: <span class="s">"https://most.hr/clanovi/nikola-grmoja#person"</span>,
+      <span class="k">"name"</span>: <span class="s">"Nikola Grmoja"</span>,
+      <span class="k">"jobTitle"</span>: <span class="s">"Predsjednik Kluba zastupnika"</span>,
+      <span class="c">// veza na stranku gore — isti @id</span>
+      <span class="k">"memberOf"</span>: { <span class="k">"@id"</span>: <span class="s">"https://most.hr/#organizacija"</span> },
+      <span class="k">"sameAs"</span>: [
+        <span class="s">"https://hr.wikipedia.org/wiki/Nikola_Grmoja"</span>,
+        <span class="s">"https://www.wikidata.org/wiki/Q######"</span>,
+        <span class="s">"https://www.sabor.hr/hr/zastupnici/nikola-grmoja"</span>
+      ]
+    }
+  ]
+}
+<span class="tag">&lt;/script&gt;</span></pre>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Implementacija &amp; automatizacija</h2>
+  <p class="sub">Najvažnije pitanje: <em>kako da se tag sam generira kad dodamo novog zastupnika ili vijest?</em> Odgovor: schema se napiše <strong>jednom</strong>, a postojeći template radi ostalo.</p>
+
+  <div class="floor">
+    <h3>Princip: napiši jednom → vrijedi za sve</h3>
+    <p>Web već ima <code style="background:#28406a;color:#cfe0ee">[slug].astro</code> predložak koji <strong>automatski</strong> radi stranicu za svakog zastupnika i svaku vijest. Automatizacija = u taj predložak dodamo <strong>jednu schema komponentu</strong>. Od tada svaki novi unos sam dobije i svoj entity tag — s ispravnim <code style="background:#28406a;color:#cfe0ee">@id</code> i vezom na stranku. Nitko ne dira kod ni JSON ručno.</p>
+  </div>
+
+  <h3 style="font-size:17px;margin:26px 0 6px">Tok kad se doda novi zastupnik / vijest</h3>
+  <div class="flow">
+    <div class="step"><div class="n">1</div><h4>Novi unos</h4><p>PR doda zastupnika ili vijest u <strong>Sanity</strong> — samo popuni polja: ime, uloga, linkovi.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">2</div><h4>Auto rebuild</h4><p>Objava u Sanityju okine webhook → Vercel sam ponovo izgradi site.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">3</div><h4>Tag se generira</h4><p>Template + schema komponenta sami ispišu stranicu I JSON-LD tag (@id iz slug-a, memberOf → MOST).</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">4</div><h4>IndexNow ping</h4><p>Build javi tražilicama/AI-ju: nova ili promijenjena stranica.</p></div>
+    <div class="arrow">→</div>
+    <div class="step"><div class="n">5</div><h4>U grafu</h4><p>Novi entitet je odmah povezan u mrežu — bez ručnog diranja.</p></div>
+  </div>
+
+  <h3 style="font-size:17px;margin:30px 0 6px">Kako to izgleda u kodu — 3 dijela</h3>
+  <p class="sub">Ilustrativno (Astro). Schema logika je u koraku 2 — napisana jednom, koristi se za sve.</p>
+<pre><span class="c">// 1) PODACI — u Sanity CMS-u. PR popuni polja u Sanity Studiju.</span>
+<span class="c">//    Sanity schema: zastupnik { name, role, slug, sameAs[] }</span>
+{
+  name: <span class="s">"Nikola Grmoja"</span>,
+  role: <span class="s">"Predsjednik Kluba zastupnika"</span>,
+  sameAs: [ <span class="s">"https://hr.wikipedia.org/wiki/Nikola_Grmoja"</span>,   <span class="c">// ← linkove daje PR</span>
+            <span class="s">"https://www.sabor.hr/.../nikola-grmoja"</span> ]
+}
+
+
+<span class="c">// 2) KOMPONENTA — schema napisana JEDNOM, vrijedi za svakog</span>
+<span class="c">//    src/components/PersonSchema.astro</span>
+const { entry } = Astro.props;
+const schema = {
+  <span class="k">"@type"</span>: <span class="s">"Person"</span>,
+  <span class="k">"@id"</span>: <span class="s">`https://most.hr/clanovi/${entry.slug}#person`</span>,  <span class="c">// @id iz slug-a</span>
+  <span class="k">"name"</span>: entry.data.name,
+  <span class="k">"jobTitle"</span>: entry.data.role,
+  <span class="k">"memberOf"</span>: { <span class="k">"@id"</span>: <span class="s">"https://most.hr/#organizacija"</span> },  <span class="c">// veza na stranku</span>
+  <span class="k">"sameAs"</span>: entry.data.sameAs
+};
+<span class="tag">&lt;script type="application/ld+json" set:html={JSON.stringify(schema)} /&gt;</span>
+
+
+<span class="c">// 3) TEMPLATE — vrti se za SVE zastupnike automatski</span>
+<span class="c">//    src/pages/clanovi/[slug].astro   (već postoji!)</span>
+const clanovi = await sanityClient.fetch(<span class="s">`*[_type == "zastupnik"]`</span>);  <span class="c">// povuče iz Sanityja</span>
+<span class="c">// → svaki unos dobije svoju stranicu</span>
+<span class="tag">&lt;PersonSchema entry={entry} /&gt;</span>   <span class="c">// ← tag se sam ubaci</span>
+&lt;article&gt;…vidljivi sadržaj…&lt;/article&gt;</pre>
+
+  <div class="callout"><b>Vijesti idu isto:</b> <code>NewsArticle</code> komponenta s <code>author</code> → poveže se na <code>@id</code> postojećeg zastupnika. Tako svaka nova vijest automatski „zakači" u graf (vijest → autor → stranka → tema).</div>
+
+  <h3 style="font-size:17px;margin:30px 0 6px">PR ekipa dodaje bez koda — preko Sanityja</h3>
+  <div class="why">
+    <div><h4>Sanity CMS</h4><p>PR uređuje zastupnike i vijesti u Sanity Studiju — popuni polja (ime, uloga, sameAs linkovi), ne dira kod.</p></div>
+    <div><h4>Webhook → deploy</h4><p>Objava u Sanityju okine Vercel deploy hook — site se sam osvježi za ~minutu.</p></div>
+    <div><h4>IndexNow</h4><p>Mali post-build skript javi Bingu/partnerima nove URL-ove — AI brže vidi promjenu.</p></div>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Roadmap — što treba postaviti</h2>
+  <p class="sub">Provjereni 11-koračni redoslijed (Volpini + Madhavan, SEO Week 2026). Postojeća infrastruktura (Astro + schema komponente) već nosi velik dio.</p>
+
+  <div class="first"><b>Ako ništa drugo — prvo ovo:</b> korak 6 (konzistentan <code>@id</code>) + korak 9 (IndexNow). Oboje gotovo besplatno, oboje mjerljivo.</div>
+
+  <div class="grouphd">Strukturni temelj</div>
+  <ol class="road">
+    <li><div class="body"><b>Inventar entiteta</b><p>Popis svih entiteta: stranka, zastupnici, teme, odbori, JLS općine (50–500).</p></div><span class="who seo">SEO</span></li>
+    <li><div class="body"><b>Pravilo URI-ja</b><p>Fiksni obrazac adrese po entitetu (npr. <code>/clanovi/[slug]</code>) — zauvijek, ne mijenja se.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Stranica po entitetu</b><p>Svaki entitet dobije svoj dom (entity page).</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Wikidata Q-brojevi</b><p>Unosi za stranku i ključne ljude — globalno „sidro”.</p></div><span class="who pr">PR · Klara/Ivana</span></li>
+    <li><div class="body"><b>Refaktor: reference, ne opisi</b><p>Entiteti se međusobno <em>referenciraju</em> (@id), ne opisuju iznova na svakoj stranici.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Konzistentnost @id-a</b> ⭐<p>Identičan <code>@id</code> svugdje. Najvažniji korak — ako se radi samo jedno, onda ovo.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Lateralne veze</b><p>Entiteti linkaju na entitete (zastupnik → tema → odbor), ne samo na početnu.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Endpoint (opcionalno)</b><p>SPARQL/GraphQL — tek ako gradimo agentske proizvode. Za sad preskačemo.</p></div><span class="who dev">Dev</span></li>
+  </ol>
+
+  <div class="grouphd">Operativne poluge</div>
+  <ol class="road" style="counter-reset:r 8">
+    <li><div class="body"><b>IndexNow</b> ⭐<p>Javlja Bingu/partnerima čim nešto objavimo/promijenimo. Drugi prioritet, gotovo besplatno.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Pristup vs. korištenje</b><p><code>data-nosnippet</code> umjesto blanko <code>noindex</code>; provjeriti da nigdje ne blokiramo AI bez razloga.</p></div><span class="who dev">Dev</span></li>
+    <li><div class="body"><b>Upravljanje svježinom</b><p>Kvartalni audit sadržaja; ažuriranja samo kad su smislena.</p></div><span class="who seo">SEO</span></li>
+  </ol>
+
+  <div class="pills">
+    <span class="pill">schema.org JSON-LD</span><span class="pill">fiksni @id</span><span class="pill">@graph</span>
+    <span class="pill">sameAs</span><span class="pill">Wikidata Q-ID</span><span class="pill">IndexNow</span><span class="pill">data-nosnippet</span><span class="pill">E-E-A-T</span>
+  </div>
+</div></section>
+
+<section><div class="wrap">
+  <h2>Izvori</h2>
+  <p class="src">
+    • Andrea Volpini (WordLift) — <em>„Structure Is the Moat: TurboQuant and RLM-on-KG”</em>, SEO Week 2026<br>
+    • Krishna Madhavan (Microsoft) — <em>„Architecting Visibility for the AI Economy”</em>, SEO Week 2026<br>
+    • Google Research — <a href="https://research.google/blog/turboquant-redefining-ai-efficiency-with-extreme-compression/">TurboQuant: Extreme Compression</a><br>
+    • <a href="https://schema.org/">Schema.org</a> · <a href="https://www.wikidata.org">Wikidata</a> · <a href="https://www.indexnow.org">IndexNow</a>
+  </p>
+</div></section>
+
+<footer><div class="wrap">MOST · Interni brief — Entity Mapping &amp; GEO</div></footer>
+</body></html>
